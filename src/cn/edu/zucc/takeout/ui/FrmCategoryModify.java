@@ -5,6 +5,7 @@ import java.awt.Button;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,7 +39,14 @@ public class FrmCategoryModify extends JDialog implements ActionListener{
 		workPane.add(labelName);
 		workPane.add(edtName);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
+		
 		this.setSize(300, 100);
+		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		this.setLocation((int) (width - this.getWidth()) / 2,
+				(int) (height - this.getHeight()) / 2);
+		this.validate();
+		
 		this.btnCancel.addActionListener(this);
 		this.btnOk.addActionListener(this);
 	}

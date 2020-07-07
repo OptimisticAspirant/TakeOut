@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import cn.edu.zucc.takeout.TakeOutUtil;
 import cn.edu.zucc.takeout.util.BaseException;
 
-public class FrmAddRider extends JDialog implements ActionListener{
+public class FrmRiderAdd extends JDialog implements ActionListener{
 	private JPanel toolBar = new JPanel();
 	private JPanel workPane = new JPanel();
 	private Button btnOk = new Button("确定");
@@ -32,7 +32,7 @@ public class FrmAddRider extends JDialog implements ActionListener{
 	private JLabel labelName = new JLabel("骑手姓名：");
 	private JTextField edtName = new JTextField(20);
 	
-	public FrmAddRider(JFrame f, String s, boolean b) {
+	public FrmRiderAdd(JFrame f, String s, boolean b) {
 		super(f, s, b);
 		toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		toolBar.add(btnOk);

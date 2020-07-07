@@ -25,6 +25,7 @@ public class FrmMainManager extends JFrame implements ActionListener {
 
     private JButton btnshop=new JButton("商家管理");
     private JButton btnrider=new JButton("骑手管理");
+    private JButton btnuser=new JButton("用户管理");
     private JButton btnpro=new JButton("商品分类");
     private JButton btnmodifyPwd=new JButton("密码修改");
     private JButton btnregister=new JButton("账户注册");
@@ -41,11 +42,13 @@ public class FrmMainManager extends JFrame implements ActionListener {
 	    this.btnrider.addActionListener(this);
 	    this.btnshop.addActionListener(this);
 	    this.btnpro.addActionListener(this);
+	    this.btnuser.addActionListener(this);
 	    
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
 	    toolBar.add(btnrider);
 	    toolBar.add(btnshop);
+	    toolBar.add(btnuser);
 	    toolBar.add(btnpro);
 	    toolBar.add(btnmodifyPwd);
 	    toolBar.add(btnregister);
@@ -80,6 +83,9 @@ public class FrmMainManager extends JFrame implements ActionListener {
 			dlg.setVisible(true);
 		}else if(e.getSource()==this.btnpro){
 			FrmMainManager_Category dlg=new FrmMainManager_Category();
+			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnuser){
+			FrmMainManager_User dlg=new FrmMainManager_User();
 			dlg.setVisible(true);
 		}
 	}

@@ -3,6 +3,7 @@ package cn.edu.zucc.takeout.ui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -61,8 +62,14 @@ public class FrmMainManager_Category extends JFrame implements ActionListener{
 	
 	public FrmMainManager_Category() {
 		
-		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setTitle("商品分类管理");
+		
+		this.setSize(480, 360);
+		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		this.setLocation((int) (width - this.getWidth()) / 2,
+				(int) (height - this.getHeight()) / 2);
+		this.validate();
 		
 	    this.btncateadd.addActionListener(this);
 	    this.btncatemodify.addActionListener(this);
@@ -75,7 +82,7 @@ public class FrmMainManager_Category extends JFrame implements ActionListener{
 	    toolBar.add(btncatemodify);
 	    this.setJMenuBar(menubar);
 	    
-	    this.getContentPane().add(new JScrollPane(this.dataTableCate), BorderLayout.WEST);
+	    this.getContentPane().add(new JScrollPane(this.dataTableCate), BorderLayout.CENTER);
 	    this.dataTableCate.addMouseListener(new MouseAdapter (){
 
 			@Override

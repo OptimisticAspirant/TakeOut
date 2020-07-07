@@ -13,4 +13,6 @@ public interface IRiderManager {
 	
 	public List<BeanRider> loadAll() throws BaseException;
 
+	public void modifyrider(BeanRider rider, String name) throws BaseException;
+
 }

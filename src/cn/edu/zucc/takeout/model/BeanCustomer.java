@@ -3,6 +3,20 @@ package cn.edu.zucc.takeout.model;
 import java.util.Date;
 
 public class BeanCustomer {
+	public static final String[] tableTitles={"用户编号","用户名称","用户性别","账号密码","用户手机","邮箱地址","所在城市","注册时间","是否会员","会员截止日期"};
+	public String getCell(int col){
+		if(col==0) return cust_id;
+		else if(col==1) return cust_name;
+		else if(col==2) return cust_gender;
+		else if(col==3) return cust_password+"";
+		else if(col==4) return cust_phone+"";
+		else if(col==5) return cust_mail;
+		else if(col==6) return cust_city+"";
+		else if(col==7) return rig_time+"";
+		else if(col==8) return ifVIP;
+		else if(col==9) return vIPdeadline+"";
+		else return "";
+	}
 	public static BeanCustomer currentLoginUser=null;
 	private String cust_id;
 	public static BeanCustomer getCurrentLoginUser() {

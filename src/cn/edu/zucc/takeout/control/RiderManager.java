@@ -16,6 +16,7 @@ import cn.edu.zucc.takeout.util.BusinessException;
 import cn.edu.zucc.takeout.util.DBUtil;
 
 public class RiderManager implements IRiderManager{
+	@Override
 	public BeanRider addrider(String riderid, String ridername) throws BaseException{
 		BeanRider result=new BeanRider();
         Connection conn=null;
@@ -60,6 +61,7 @@ public class RiderManager implements IRiderManager{
         return result;
 	}
 	
+	@Override
 	public void deleterider(BeanRider rider) throws BaseException{
 		Connection conn=null;
 		try {
@@ -87,6 +89,31 @@ public class RiderManager implements IRiderManager{
 		}
 	}
 	
+	@Override
+	public void modifyrider(BeanRider rider,String name) throws BaseException{
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="update rider set rider_name=? where rider_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setString(1,name);
+            pst.setString(2,rider.getRider_id());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	@Override
 	public List<BeanRider> loadAll() throws BaseException{
 		List<BeanRider> result=new ArrayList<BeanRider>();
 		Connection conn=null;

@@ -31,6 +31,7 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 	private JPanel toolBar=new JPanel();
 
     private JButton btnrideradd=new JButton("ÃÌº”∆Ô ÷");
+    private JButton btnridermodify=new JButton("±‡º≠∆Ô ÷");
     private JButton btnriderdelete=new JButton("…æ≥˝∆Ô ÷");
     private JButton btnorder=new JButton("∑÷≈‰∂©µ•");
     
@@ -41,8 +42,9 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 
 	private BeanRider curRider=null;
 	List<BeanRider> allRider=null;
+	public static BeanRider rider=null;
 	
-	private void reloadRiderTable(){//rider
+	private void reloadRiderTable(){
 		try {
 			allRider=TakeOutUtil.riderManager.loadAll();
 		} catch (BaseException e) {
@@ -66,11 +68,13 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
     	
     	this.btnrideradd.addActionListener(this);
 	    this.btnriderdelete.addActionListener(this);
+	    this.btnridermodify.addActionListener(this);
 	    this.btnorder.addActionListener(this);
     	
 	    toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
 	    toolBar.add(btnrideradd);
+	    toolBar.add(btnridermodify);
 	    toolBar.add(btnriderdelete);
 	    toolBar.add(btnorder);
 	    this.setJMenuBar(menubar);
@@ -94,7 +98,7 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource()==this.btnrideradd){
-			FrmAddRider dlg=new FrmAddRider(this,"ÃÌº”∆Ô ÷",true);
+			FrmRiderAdd dlg=new FrmRiderAdd(this,"ÃÌº”∆Ô ÷",true);
 			dlg.setVisible(true);
 			this.reloadRiderTable();
 		}else if(e.getSource()==this.btnriderdelete){
@@ -112,6 +116,18 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "¥ÌŒÛ",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+		}else if(e.getSource()==this.btnridermodify){
+			int i=FrmMainManager_Rider.this.dataTableRider.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "«Î—°‘Ò∆Ô ÷", "¥ÌŒÛ",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curRider=allRider.get(i);
+				rider=curRider;
+			}
+			FrmRiderModify dlg=new FrmRiderModify(this,"±‡º≠∆Ô ÷",true);
+			dlg.setVisible(true);
+			this.reloadRiderTable();
 		}
 	}
 
