@@ -181,7 +181,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			dlg.setVisible(true);
 			this.reloadShopTable();
 		    this.reloadProTable();
-			reloadShopProTabel(Integer.parseInt(curProduct.getShop_id()));
 		}else if(e.getSource()==this.btnprodelete){
 			int i=FrmMainManager_Shopkeeper.this.dataTablePro.getSelectedRow();
 			if(i<0) {
@@ -194,7 +193,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				TakeOutUtil.productManager.deleteProduct(this.curProduct);
 				this.reloadShopTable();
 			    this.reloadProTable();
-				reloadShopProTabel(Integer.parseInt(curProduct.getShop_id()));
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
