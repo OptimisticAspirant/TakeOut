@@ -89,7 +89,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	private void reloadShopProTabel(int shopIdx){
 		if(shopIdx<0) return;
 		curShop=allShop.get(shopIdx);
-		shop=curShop;
 		try {
 			shopPros=TakeOutUtil.productManager.loadShopProducts(curShop);
 		} catch (BaseException e) {
@@ -142,7 +141,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	    this.getContentPane().add(new JScrollPane(this.dataTablePro), BorderLayout.CENTER);
 	    
 	    this.reloadShopTable();
-	    this.reloadProTable();
 	}
 
 	@Override
@@ -176,6 +174,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				return;
 			}else {
 				curShop=allShop.get(i);
+				shop=curShop;
 			}
 			FrmAddProduct dlg=new FrmAddProduct(this,"添加商品",true);
 			dlg.setVisible(true);
@@ -187,7 +186,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "请选择商品", "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
-				curShop=allShop.get(i);
+				curProduct=allProduct.get(i);
 			}
 			try {
 				TakeOutUtil.productManager.deleteProduct(this.curProduct);

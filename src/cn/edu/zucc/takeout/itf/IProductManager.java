@@ -17,5 +17,7 @@ public interface IProductManager {
 	public void modify(BeanProduct pro, String cateid) throws BaseException;
 	
 	public List<String> loadProCate() throws BaseException;
+
+	public List<String> loadProCateID() throws BaseException;
 	
 }

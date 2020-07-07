@@ -11,18 +11,29 @@ import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
 import cn.edu.zucc.takeout.util.BusinessException;
 import cn.edu.zucc.takeout.util.DBUtil;
+import sun.jvm.hotspot.oops.java_lang_Class;
 
 public class ProductManager implements IProductManager{
 	@Override
 	public void add(BeanShopkeeper shop, String id, String category,String name,Float price,Float discount) throws BaseException {
 		Connection conn=null;
+		String cateid=null;
 		if(id.equals("")||category.equals("")||name.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
 		try {
 			conn=DBUtil.getConnection();
-			String sql="insert into product(pro_id,shop_id,cate_id,pro_name,pro_price,pro_discount) values(?,?,?,?,?,?)";
+			String sql="select * from product where pro_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, id);
+			pst.execute();
+			java.sql.ResultSet rs=pst.getResultSet();
+			if(rs.next()) {
+				throw new BusinessException("该商品已存在");
+			}
+			pst.close();
+			sql="insert into product(pro_id,shop_id,cate_id,pro_name,pro_price,pro_discount) values(?,?,?,?,?,?)";
+			pst=conn.prepareStatement(sql);
 			pst.setString(1, id);
 			pst.setString(2, shop.getShop_id());
 			pst.setString(3, category);
@@ -31,6 +42,19 @@ public class ProductManager implements IProductManager{
 			pst.setFloat(6, discount);
 			pst.execute();
 			pst.close();
+			sql="select cate_id from product where pro_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setString(1, id);
+			pst.execute();
+			rs=pst.getResultSet();
+			while(rs.next()) {
+				cateid=rs.getString(1);
+			}
+			pst.close();
+			sql="update productcategory set pro_count=pro_count+1 where cate_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setString(1, cateid);
+			pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -51,8 +75,9 @@ public class ProductManager implements IProductManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select pro_id,shop_id,cate_id,pro_name,pro_price,pro_discount from product order by pro_id";
+			String sql="select pro_id,shop_id,cate_id,pro_name,pro_price,pro_discount from product where shop_id=? order by pro_id";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, shop.getShop_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
@@ -85,10 +110,25 @@ public class ProductManager implements IProductManager{
 	@Override
 	public void deleteProduct(BeanProduct product) throws BaseException {
 		Connection conn=null;
+		String cateid=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="delete from product where pro_id=?";
+			String sql="select cate_id from product where pro_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, product.getPro_id());
+			pst.execute();
+			java.sql.ResultSet rs=pst.getResultSet();
+			while(rs.next()) {
+				cateid=rs.getString(1);
+			}
+			pst.close();
+			sql="update productcategory set pro_count=pro_count-1 where cate_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setString(1, cateid);
+			pst.executeUpdate();
+			pst.close();
+			sql="delete from product where pro_id=?";
+			pst=conn.prepareStatement(sql);
 			pst.setString(1, product.getPro_id());
 			pst.executeUpdate();
 			pst.close();
@@ -139,6 +179,37 @@ public class ProductManager implements IProductManager{
 		try {
 			conn=DBUtil.getConnection();
 			String sql="select columnname from productcategory";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.execute();
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				String s=rs.getString(1);
+				result.add(s);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<String> loadProCateID() throws BaseException {
+		List<String> result=new ArrayList<String>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select cate_id from productcategory";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();

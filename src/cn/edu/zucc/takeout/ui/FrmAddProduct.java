@@ -35,12 +35,12 @@ public class FrmAddProduct extends JDialog implements ActionListener{
 	private JLabel labelPrice = new JLabel("商品价格：");
 	private JLabel labelSale = new JLabel("优惠价格：");
 	
-	private JTextField edtID = new JTextField(20);
+	private JTextField edtID = new JTextField(15);
 	private JComboBox edtCateId=new JComboBox();
 
-	private JTextField edtCatename = new JTextField(20);
-	private JTextField edtPrice = new JTextField(20);
-	private JTextField edtSale = new JTextField(20);
+	private JTextField edtCatename = new JTextField(15);
+	private JTextField edtPrice = new JTextField(15);
+	private JTextField edtSale = new JTextField(15);
 	public FrmAddProduct(JFrame f, String s, boolean b) {
 		super(f, s, b);
 		toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -51,7 +51,7 @@ public class FrmAddProduct extends JDialog implements ActionListener{
 		workPane.add(edtID);
 		workPane.add(labelCateId);
 		workPane.add(edtCateId);
-		edtCateId.addItem("---请选择---");
+		edtCateId.addItem("-----请选择商品类别------");
 		List<String> cateList=null;
 		try {
 			cateList = new ProductManager().loadProCate();
@@ -69,7 +69,7 @@ public class FrmAddProduct extends JDialog implements ActionListener{
 		workPane.add(labelSale);
 		workPane.add(edtSale);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
-		this.setSize(360, 180);
+		this.setSize(280, 220);
 		// 屏幕居中显示
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -83,14 +83,22 @@ public class FrmAddProduct extends JDialog implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		List<String> cateIdList=null;
+		try {
+			cateIdList=new ProductManager().loadProCateID();
+		} catch (BaseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		if(e.getSource()==this.btnCancel) {
 			this.setVisible(false);
 			return;
 		}
 		else if(e.getSource()==this.btnOk){
 			String proid=this.edtID.getText();
-			String category=this.edtCateId.getToolTipText();
-			String proname=this.edtCatename.getToolTipText();
+			int selectedId=this.edtCateId.getSelectedIndex();
+			String category=cateIdList.get(selectedId-1);
+			String proname=this.edtCatename.getText();
 			Float price=Float.parseFloat(this.edtPrice.getText());
 			Float sale=Float.parseFloat(this.edtSale.getText());
 			try {
