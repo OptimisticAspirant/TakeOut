@@ -1,12 +1,14 @@
 package cn.edu.zucc.takeout;
 
 import cn.edu.zucc.takeout.control.CategoryManager;
+import cn.edu.zucc.takeout.control.CouponManager;
 import cn.edu.zucc.takeout.control.CustomerManager;
 import cn.edu.zucc.takeout.control.ManagerManager;
 import cn.edu.zucc.takeout.control.ProductManager;
 import cn.edu.zucc.takeout.control.RiderManager;
 import cn.edu.zucc.takeout.control.ShopkeeperManager;
 import cn.edu.zucc.takeout.itf.ICategoryManager;
+import cn.edu.zucc.takeout.itf.ICouponManager;
 import cn.edu.zucc.takeout.itf.ICustomerManager;
 import cn.edu.zucc.takeout.itf.IManagerManager;
 import cn.edu.zucc.takeout.itf.IProductManager;
@@ -21,4 +23,6 @@ public class TakeOutUtil {
 	public static ICustomerManager customerManager=new CustomerManager();
 	public static ICategoryManager categoryManager=new CategoryManager();
 	public static IProductManager productManager=new ProductManager();
+	public static ICouponManager couponManager=new CouponManager();
+	
 }

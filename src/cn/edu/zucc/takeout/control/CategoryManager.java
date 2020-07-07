@@ -23,8 +23,15 @@ public class CategoryManager implements ICategoryManager{
         }
         try {
             conn=DBUtil.getConnection();
-            String sql="insert into productcategory(cate_id,columnname,pro_count) values(?,?,?)";
+            String sql="select * from productcategory where cate_id=?";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setString(1,cateid);
+            ResultSet rs=pst.executeQuery();
+            if(rs.next()) {
+            	throw new BusinessException("该用户已存在");
+            }
+            sql="insert into productcategory(cate_id,columnname,pro_count) values(?,?,?)";
+            pst=conn.prepareStatement(sql);
             pst.setString(1,cateid);
             pst.setString(2,name);
             pst.setInt(3,0);

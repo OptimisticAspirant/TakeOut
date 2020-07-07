@@ -11,7 +11,6 @@ import java.util.List;
 
 import cn.edu.zucc.takeout.itf.ICustomerManager;
 import cn.edu.zucc.takeout.model.BeanCustomer;
-import cn.edu.zucc.takeout.model.BeanRider;
 import cn.edu.zucc.takeout.util.BaseException;
 import cn.edu.zucc.takeout.util.BusinessException;
 import cn.edu.zucc.takeout.util.DBUtil;
@@ -130,19 +129,12 @@ public class CustomerManager implements ICustomerManager{
 		if(oldPwd.equals("")||newPwd.equals("")||newPwd2.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
+		if(!oldPwd.equals(user.getCust_password())) throw new BusinessException("原密码错误");
+		if(!newPwd.equals(newPwd2)) throw new BusinessException("两次密码不匹配");
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select * from customer where cust_id=?";
+			String sql="update customer set cust_password=? where cust_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,user.getCust_id());
-			java.sql.ResultSet rs=pst.executeQuery();
-			if(!rs.next()) throw new BusinessException("登陆账号不存在");
-			if(!oldPwd.equals(user.getCust_password())) throw new BusinessException("原密码错误");
-			if(!newPwd.equals(newPwd2)) throw new BusinessException("两次密码不匹配");
-			rs.close();
-			pst.close();
-			sql="update customer set cuat_password=? where cust_id=?";
-			pst=conn.prepareStatement(sql);
 			pst.setString(1, newPwd);
 			pst.setString(2, user.getCust_id());
 			pst.execute();
@@ -167,16 +159,23 @@ public class CustomerManager implements ICustomerManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select cate_id,columnname,pro_count from productcategory";
+			String sql="select cust_id,cust_name,cust_gender,cust_password,cust_phone,cust_mail,cust_city,rig_time,ifVIP,VIPdeadline from customer";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanCustomer p=new BeanCustomer();
-//				p.setCate_id(rs.getString(1));
-//				p.setColumnname(rs.getString(2));
-//				p.setPro_count(rs.getInt(3));
-//				result.add(p);
+				p.setCust_id(rs.getString(1));
+				p.setCust_name(rs.getString(2));
+				p.setCust_gender(rs.getString(3));
+				p.setCust_password(rs.getString(4));
+				p.setCust_phone(rs.getString(5));
+				p.setCust_mail(rs.getString(6));
+				p.setCust_city(rs.getString(7));
+				p.setRig_time(rs.getTimestamp(8));
+				p.setIfVIP(rs.getString(9));
+				p.setvIPdeadline(rs.getTimestamp(10));
+				result.add(p);
 			}
 			rs.close();
 			pst.close();
@@ -193,6 +192,40 @@ public class CustomerManager implements ICustomerManager{
 				}
 		}
 		return result;
+	}
+	
+	@Override
+	public void deleteuser(BeanCustomer customer) throws BaseException{
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select orderstate from productorder where cust_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setString(1,customer.getCust_id());
+			pst.execute();
+			java.sql.ResultSet rs=pst.getResultSet();
+			String state=null;
+			if(rs.next()) {
+				state=rs.getString(1);
+				throw new BusinessException("该用户存在配送中的订单，不能删除");
+			}
+			sql="delete from customer where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setString(1,customer.getCust_id());
+			pst.executeUpdate();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 	}
 	
 }

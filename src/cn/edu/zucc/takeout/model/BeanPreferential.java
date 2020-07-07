@@ -1,8 +1,20 @@
 package cn.edu.zucc.takeout.model;
 
 public class BeanPreferential {
+	
+	public static final String[] tableTitles={"Âú¼õ±àºÅ","Âú¼õ½ğ¶î","ÓÅ»İ½ğ¶î","¿É·ñÓëÓÅ»İÈ¯µş¼Ó"};
+	public String getCell(int col){
+		if(col==0) return pre_id;
+		else if(col==1) return pre_require+"";
+		else if(col==2) return pre_cut+"";
+		else if(col==3) return ifcoupon+"";
+		else return "";
+	}
 	private String pre_id;
 	private String shop_id;
+	public static String[] getTabletitles() {
+		return tableTitles;
+	}
 	private float pre_require;
 	private float pre_cut;
 	private String ifcoupon;

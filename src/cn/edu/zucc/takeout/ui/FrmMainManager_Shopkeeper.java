@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
+import cn.edu.zucc.takeout.model.BeanCoupon;
+import cn.edu.zucc.takeout.model.BeanPreferential;
 import cn.edu.zucc.takeout.model.BeanProduct;
 import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
@@ -34,6 +36,10 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
     private JButton btnshopdelete=new JButton("删除商家");
     private JButton btnproadd=new JButton("添加商品");
     private JButton btnprodelete=new JButton("删除商品");
+    private JButton btncouadd=new JButton("添加优惠券");
+    private JButton btncoudelete=new JButton("删除优惠券");
+    private JButton btnmanadd=new JButton("添加满减方案");
+    private JButton btnmandelete=new JButton("删除满减方案");
 	
 	private Object tblShopTitle[]=BeanShopkeeper.tableTitles;
 	private Object tblShopData[][];
@@ -45,10 +51,25 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	DefaultTableModel tabProModel=new DefaultTableModel();
 	private JTable dataTablePro=new JTable(tabProModel);
 	
+	private Object tblCouTitle[]=BeanCoupon.tableTitles;
+	private Object tblCouData[][];
+	DefaultTableModel tabCouModel=new DefaultTableModel();
+	private JTable dataTableCou=new JTable(tabCouModel);
+	
+	private Object tblManTitle[]=BeanPreferential.tableTitles;
+	private Object tblManData[][];
+	DefaultTableModel tabManModel=new DefaultTableModel();
+	private JTable dataTableMan=new JTable(tabManModel);
+	
 	private BeanShopkeeper curShop=null;
 	List<BeanShopkeeper> allShop=null;
 	private BeanProduct curProduct=null;
 	List<BeanProduct> allProduct=null;
+	private BeanCoupon curCoupon=null;
+	List<BeanCoupon> allCoupon=null;
+	private BeanPreferential curMan=null;
+	List<BeanPreferential> allMan=null;
+	
 	List<BeanProduct> shopPros=null;
 	public static BeanShopkeeper shop=null;
 	
@@ -72,6 +93,23 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	private void reloadProTable(){
 		try {
 			allProduct=TakeOutUtil.productManager.loadShopProducts(curShop);
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		tblProData =  new Object[allProduct.size()][BeanProduct.tableTitles.length];
+		for(int i=0;i<allProduct.size();i++){
+			for(int j=0;j<BeanProduct.tableTitles.length;j++)
+				tblProData[i][j]=allProduct.get(i).getCell(j);
+		}
+		tabProModel.setDataVector(tblProData,tblProTitle);
+		this.dataTablePro.validate();
+		this.dataTablePro.repaint();
+	}
+	
+	private void reloadCouTable(){
+		try {
+			allCoupon=TakeOutUtil.couponManager.loadShopCoupon(curShop);
 		} catch (BaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;

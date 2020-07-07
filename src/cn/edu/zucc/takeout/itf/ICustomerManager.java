@@ -14,5 +14,7 @@ public interface ICustomerManager {
 	public void changePwd(BeanCustomer user, String oldPwd,String newPwd, String newPwd2)throws BaseException;
 
 	public List<BeanCustomer> loadAll() throws BaseException;
+
+	public void deleteuser(BeanCustomer customer) throws BaseException;
 	
 }
