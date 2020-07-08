@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
 import cn.edu.zucc.takeout.model.BeanCoupon;
+import cn.edu.zucc.takeout.model.BeanDiscount;
 import cn.edu.zucc.takeout.model.BeanPreferential;
 import cn.edu.zucc.takeout.model.BeanProduct;
 import cn.edu.zucc.takeout.model.BeanShopkeeper;
@@ -32,14 +33,14 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	
 	private JPanel toolBar=new JPanel();
 	
-	private JButton btnshopadd=new JButton("Ìí¼ÓÉÌ¼Ò");
-    private JButton btnshopdelete=new JButton("É¾³ıÉÌ¼Ò");
-    private JButton btnproadd=new JButton("Ìí¼ÓÉÌÆ·");
-    private JButton btnprodelete=new JButton("É¾³ıÉÌÆ·");
-    private JButton btncouadd=new JButton("Ìí¼ÓÓÅ»İÈ¯");
-    private JButton btncoudelete=new JButton("É¾³ıÓÅ»İÈ¯");
-    private JButton btnmanadd=new JButton("Ìí¼ÓÂú¼õ·½°¸");
-    private JButton btnmandelete=new JButton("É¾³ıÂú¼õ·½°¸");
+	private JButton btnshopadd=new JButton("æ·»åŠ å•†å®¶");
+    private JButton btnshopdelete=new JButton("åˆ é™¤å•†å®¶");
+    private JButton btnproadd=new JButton("æ·»åŠ å•†å“");
+    private JButton btnprodelete=new JButton("åˆ é™¤å•†å“");
+    private JButton btncouadd=new JButton("æ·»åŠ ä¼˜æƒ åˆ¸");
+    private JButton btncoudelete=new JButton("åˆ é™¤ä¼˜æƒ åˆ¸");
+    private JButton btnmanadd=new JButton("æ·»åŠ æ»¡å‡æ–¹æ¡ˆ");
+    private JButton btnmandelete=new JButton("åˆ é™¤æ»¡å‡æ–¹æ¡ˆ");
 	
 	private Object tblShopTitle[]=BeanShopkeeper.tableTitles;
 	private Object tblShopData[][];
@@ -71,13 +72,15 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	List<BeanPreferential> allMan=null;
 	
 	List<BeanProduct> shopPros=null;
+	List<BeanCoupon> shopCous=null;
+	List<BeanPreferential> shopMans=null;
 	public static BeanShopkeeper shop=null;
 	
 	private void reloadShopTable(){
 		try {
 			allShop=TakeOutUtil.shopkeeperManager.loadAll();
 		} catch (BaseException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		tblShopData =  new Object[allShop.size()][BeanShopkeeper.tableTitles.length];
@@ -94,7 +97,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 		try {
 			allProduct=TakeOutUtil.productManager.loadShopProducts(curShop);
 		} catch (BaseException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		tblProData =  new Object[allProduct.size()][BeanProduct.tableTitles.length];
@@ -111,17 +114,34 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 		try {
 			allCoupon=TakeOutUtil.couponManager.loadShopCoupon(curShop);
 		} catch (BaseException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblProData =  new Object[allProduct.size()][BeanProduct.tableTitles.length];
-		for(int i=0;i<allProduct.size();i++){
-			for(int j=0;j<BeanProduct.tableTitles.length;j++)
-				tblProData[i][j]=allProduct.get(i).getCell(j);
+		tblCouData =  new Object[allCoupon.size()][BeanCoupon.tableTitles.length];
+		for(int i=0;i<allCoupon.size();i++){
+			for(int j=0;j<BeanCoupon.tableTitles.length;j++)
+				tblCouData[i][j]=allCoupon.get(i).getCell(j);
 		}
-		tabProModel.setDataVector(tblProData,tblProTitle);
-		this.dataTablePro.validate();
-		this.dataTablePro.repaint();
+		tabProModel.setDataVector(tblCouData,tblCouTitle);
+		this.dataTableCou.validate();
+		this.dataTableCou.repaint();
+	}
+	
+	private void reloadManTable(){
+		try {
+			allCoupon=TakeOutUtil.couponManager.loadShopCoupon(curShop);
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		tblCouData =  new Object[allCoupon.size()][BeanCoupon.tableTitles.length];
+		for(int i=0;i<allCoupon.size();i++){
+			for(int j=0;j<BeanCoupon.tableTitles.length;j++)
+				tblCouData[i][j]=allCoupon.get(i).getCell(j);
+		}
+		tabProModel.setDataVector(tblCouData,tblCouTitle);
+		this.dataTableCou.validate();
+		this.dataTableCou.repaint();
 	}
 	
 	private void reloadShopProTabel(int shopIdx){
@@ -130,7 +150,47 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 		try {
 			shopPros=TakeOutUtil.productManager.loadShopProducts(curShop);
 		} catch (BaseException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		tblProData =new Object[shopPros.size()][tblProTitle.length];
+		for(int i=0;i<shopPros.size();i++){
+			for(int j=0;j<tblProTitle.length;j++)
+				tblProData[i][j]=shopPros.get(i).getCell(j);
+		}
+		
+		tabProModel.setDataVector(tblProData,tblProTitle);
+		this.dataTablePro.validate();
+		this.dataTablePro.repaint();
+	}
+	
+	private void reloadShopManTabel(int shopIdx){
+		if(shopIdx<0) return;
+		curShop=allShop.get(shopIdx);
+		try {
+			shopMans=TakeOutUtil.couponManager.loadShopMan(curShop);
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		tblProData =new Object[shopPros.size()][tblProTitle.length];
+		for(int i=0;i<shopPros.size();i++){
+			for(int j=0;j<tblProTitle.length;j++)
+				tblProData[i][j]=shopPros.get(i).getCell(j);
+		}
+		
+		tabProModel.setDataVector(tblProData,tblProTitle);
+		this.dataTablePro.validate();
+		this.dataTablePro.repaint();
+	}
+	
+	private void reloadShopCouTabel(int shopIdx){
+		if(shopIdx<0) return;
+		curShop=allShop.get(shopIdx);
+		try {
+			shopCous=TakeOutUtil.couponManager.loadShopCoupon(curShop);
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		tblProData =new Object[shopPros.size()][tblProTitle.length];
@@ -147,7 +207,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	public FrmMainManager_Shopkeeper(){
 		
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
-		this.setTitle("ÉÌ¼Ò¹ÜÀí");
+		this.setTitle("å•†å®¶ç®¡ç†");
 		
 		this.btnshopadd.addActionListener(this);
 	    this.btnshopdelete.addActionListener(this);
@@ -160,9 +220,12 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	    toolBar.add(btnshopdelete);
 	    toolBar.add(btnproadd);
 	    toolBar.add(btnprodelete);
+	    toolBar.add(btncouadd);
+	    toolBar.add(btncoudelete);
+	    toolBar.add(btnmanadd);
+	    toolBar.add(btnmandelete);
 	    this.setJMenuBar(menubar);
 	    
-	    this.getContentPane().add(new JScrollPane(this.dataTableShop), BorderLayout.WEST);
 	    this.dataTableShop.addMouseListener(new MouseAdapter (){
 
 			@Override
@@ -175,8 +238,15 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			}
 	    	
 	    });
-	    
-	    this.getContentPane().add(new JScrollPane(this.dataTablePro), BorderLayout.CENTER);
+
+	    JPanel right=new JPanel(new BorderLayout());
+	    JPanel rightSouth=new JPanel(new BorderLayout());
+	    this.getContentPane().add(new JScrollPane(this.dataTableShop), BorderLayout.WEST);
+	    this.getContentPane().add(right, BorderLayout.CENTER);
+	    right.add(new JScrollPane(this.dataTablePro), BorderLayout.NORTH);
+	    right.add(rightSouth, BorderLayout.SOUTH);
+	    rightSouth.add(new JScrollPane(this.dataTableCou), BorderLayout.WEST);
+	    rightSouth.add(new JScrollPane(this.dataTableMan), BorderLayout.CENTER);
 	    
 	    this.reloadShopTable();
 	}
@@ -185,14 +255,14 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource()==this.btnshopadd){
-			FrmShopkeeperAdd dlg=new FrmShopkeeperAdd(this,"Ìí¼ÓÉÌ¼Ò",true);
+			FrmShopkeeperAdd dlg=new FrmShopkeeperAdd(this,"æ·»åŠ å•†å®¶",true);
 			dlg.setVisible(true);
 			this.reloadShopTable();
 		    this.reloadProTable();
 		}else if(e.getSource()==this.btnshopdelete){
 			int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
 			if(i<0) {
-				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÉÌ¼Ò", "´íÎó",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "è¯·é€‰æ‹©å•†å®¶", "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
 				curShop=allShop.get(i);
@@ -202,26 +272,26 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				this.reloadShopTable();
 			    this.reloadProTable();
 			} catch (BaseException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}else if(e.getSource()==this.btnproadd){
 			int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
 			if(i<0) {
-				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÉÌ¼Ò", "´íÎó",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "è¯·é€‰æ‹©å•†å®¶", "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
 				curShop=allShop.get(i);
 				shop=curShop;
 			}
-			FrmAddProduct dlg=new FrmAddProduct(this,"Ìí¼ÓÉÌÆ·",true);
+			FrmAddProduct dlg=new FrmAddProduct(this,"æ·»åŠ å•†å“",true);
 			dlg.setVisible(true);
 			this.reloadShopTable();
 		    this.reloadProTable();
 		}else if(e.getSource()==this.btnprodelete){
 			int i=FrmMainManager_Shopkeeper.this.dataTablePro.getSelectedRow();
 			if(i<0) {
-				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÉÌÆ·", "´íÎó",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "è¯·é€‰æ‹©å•†å“", "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
 				curProduct=allProduct.get(i);
@@ -231,7 +301,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				this.reloadShopTable();
 			    this.reloadProTable();
 			} catch (BaseException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}

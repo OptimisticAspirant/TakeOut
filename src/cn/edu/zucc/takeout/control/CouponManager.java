@@ -14,6 +14,7 @@ import cn.edu.zucc.takeout.model.BeanCoupon;
 import cn.edu.zucc.takeout.model.BeanCouponhold;
 import cn.edu.zucc.takeout.model.BeanCustomer;
 import cn.edu.zucc.takeout.model.BeanDiscount;
+import cn.edu.zucc.takeout.model.BeanPreferential;
 import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
 import cn.edu.zucc.takeout.util.BusinessException;
@@ -113,6 +114,97 @@ public class CouponManager implements ICouponManager{
 				p.setCoup_count(rs.getInt(3));
 				p.setStartdate(rs.getDate(4));
 				p.setEnddate(rs.getDate(5));
+				result.add(p);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	@Override
+	public void addpreferential(BeanShopkeeper shop,Float require,Float cut,String ifcoupon) throws BaseException{
+        Connection conn=null;
+        if(require==null||cut==null||ifcoupon.equals("")) {
+        	throw new BusinessException("请将信息填写完整！");
+        }
+        try {
+            conn=DBUtil.getConnection();
+            String sql="insert into preferential(shop_id,pre_require,pre_cut,ifcoupon) values(?,?,?,?)";
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setInt(1,shop.getShop_id());
+            pst.setFloat(2,require);
+            pst.setFloat(3, cut);
+            pst.setString(4, ifcoupon);
+            pst.execute();
+			pst.close();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(conn!=null) {
+                try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }
+	}
+	
+	@Override
+	public void deletepreferential(BeanPreferential preferential) throws BaseException{
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="delete from preferential where pre_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, preferential.getPre_id());
+			pst.executeUpdate();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
+	}
+	
+	@Override
+	public List<BeanPreferential> loadShopMan(BeanShopkeeper shop) throws BaseException{
+		List<BeanPreferential> result=new ArrayList<BeanPreferential>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select pre_id,pre_require,pre_cut,ifcoupon from preferential where shop_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1,shop.getShop_id());
+			pst.execute();
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				BeanPreferential p=new BeanPreferential();
+				p.setPre_id(rs.getInt(1));
+				p.setPre_require(rs.getFloat(2));
+				p.setPre_cut(rs.getFloat(3));
+				p.setIfcoupon(rs.getString(4));
 				result.add(p);
 			}
 			rs.close();
