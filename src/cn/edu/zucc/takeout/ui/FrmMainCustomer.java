@@ -58,7 +58,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	    toolBar.add(btnregister);
 	    this.setJMenuBar(menubar);
 	    
-	    //×´Ì¬À¸
+	    
 	    statusBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    JLabel label=new JLabel("ÄúºÃ!"+BeanCustomer.currentLoginUser.getCust_name()+"!");
 	    statusBar.add(label);
@@ -81,7 +81,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 			FrmCustomerModifyPwd dlg=new FrmCustomerModifyPwd(this,"ÃÜÂëÐÞ¸Ä",true);
 			dlg.setVisible(true);
 		}else if(e.getSource()==this.btncoupon){
-			FrmMainManager_Rider dlg=new FrmMainManager_Rider();
+			FrmMainCustomer_Coupon dlg=new FrmMainCustomer_Coupon();
 			dlg.setVisible(true);
 		}
 //			else if(e.getSource()==this.btnpro){

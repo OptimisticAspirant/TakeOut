@@ -3,9 +3,28 @@ package cn.edu.zucc.takeout.model;
 import java.util.Date;
 
 public class BeanCouponhold {
+	public static final String[] tableTitles={"优惠券编号","商家编号","优惠金额","拥有数量","失效时间"};
+	public String getCell(int col){
+		if(col==0) return coup_id;
+		else if(col==1) return shop_id+"";
+		else if(col==2) return subtract+"";
+		else if(col==3) return hold_mount+"";
+		else if(col==4) return hold_deadline+"";
+		else return "";
+	}
+	public static String[] getTabletitles() {
+		return tableTitles;
+	}
 	private String coup_id;
 	private String cust_id;
 	private String shop_id;
+	private float subtract;
+	public float getSubtract() {
+		return subtract;
+	}
+	public void setSubtract(float subtract) {
+		this.subtract = subtract;
+	}
 	private int hold_mount;
 	private Date hold_deadline;
 	public String getCoup_id() {
