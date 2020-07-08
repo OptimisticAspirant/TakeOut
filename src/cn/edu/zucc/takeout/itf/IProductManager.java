@@ -8,13 +8,13 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public interface IProductManager {
 	
-	public void add(BeanShopkeeper shop, String id, String category,String name,Float price,Float discount) throws BaseException;
+	public void add(BeanShopkeeper shop,int proid,String category,String name,Float price,Float discount) throws BaseException;
 	
 	public void deleteProduct(BeanProduct product) throws BaseException;
 
 	List<BeanProduct> loadShopProducts(BeanShopkeeper shop) throws BaseException;
 
-	public void modify(BeanProduct pro, String cateid) throws BaseException;
+	public void modify(BeanProduct pro, int cateid) throws BaseException;
 	
 	public List<String> loadProCate() throws BaseException;
 

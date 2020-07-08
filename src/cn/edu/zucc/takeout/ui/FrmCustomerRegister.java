@@ -111,7 +111,7 @@ public class FrmCustomerRegister extends JDialog implements ActionListener{
 		if(e.getSource()==this.btnCancel)
 			this.setVisible(false);
 		else if(e.getSource()==this.btnOk){
-			String userid=this.edtUserId.getText();
+			int userid=Integer.parseInt(this.edtUserId.getText());
 			String username=this.edtUserName.getText();
 			String gender=this.edtUserGender.getText();
 			String phonenumber=this.edtUserPhone.getText();

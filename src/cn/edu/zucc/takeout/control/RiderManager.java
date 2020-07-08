@@ -17,10 +17,10 @@ import cn.edu.zucc.takeout.util.DBUtil;
 
 public class RiderManager implements IRiderManager{
 	@Override
-	public BeanRider addrider(String riderid, String ridername) throws BaseException{
+	public BeanRider addrider(String ridername) throws BaseException{
 		BeanRider result=new BeanRider();
         Connection conn=null;
-        if(riderid.equals("")||ridername.equals("")) {
+        if(ridername.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -28,21 +28,13 @@ public class RiderManager implements IRiderManager{
 		Timestamp createDate = Timestamp.valueOf(time);
         try {
             conn=DBUtil.getConnection();
-            String sql="select * from rider where rider_id=?";
-			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1, riderid);
-			pst.execute();
-			ResultSet rs=pst.getResultSet();
-			if(rs.next()) throw new BusinessException("该骑手已存在!");
-            sql="insert into rider(rider_id,rider_name,entrydate,identity) values(?,?,?,?)";
-            pst=conn.prepareStatement(sql);
-            pst.setString(1,riderid);
-            pst.setString(2,ridername);
-            pst.setTimestamp(3,createDate);
-            pst.setString(4, "新手");
+            String sql="insert into rider(rider_name,entrydate,identity) values(?,?,?)";
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setString(1,ridername);
+            pst.setTimestamp(2,createDate);
+            pst.setString(3, "新手");
             pst.execute();
 			pst.close();
-			result.setRider_id(riderid);
 			result.setRider_name(ridername);
 			result.setEntrydate(createDate);
 			result.setIdentity("新手");
@@ -68,11 +60,11 @@ public class RiderManager implements IRiderManager{
 			conn=DBUtil.getConnection();
 			String sql="delete from riderbill where rider_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            pst.setString(1,rider.getRider_id());
+            pst.setInt(1,rider.getRider_id());
 			pst.execute();
 			sql="delete from rider where rider_id=?";
 			pst=conn.prepareStatement(sql);
-            pst.setString(1,rider.getRider_id());
+            pst.setInt(1,rider.getRider_id());
 			pst.executeUpdate();
 			pst.close();
 		} catch (SQLException e) {
@@ -97,7 +89,7 @@ public class RiderManager implements IRiderManager{
 			String sql="update rider set rider_name=? where rider_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
             pst.setString(1,name);
-            pst.setString(2,rider.getRider_id());
+            pst.setInt(2,rider.getRider_id());
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -125,7 +117,7 @@ public class RiderManager implements IRiderManager{
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanRider p=new BeanRider();
-				p.setRider_id(rs.getString(1));
+				p.setRider_id(rs.getInt(1));
 				p.setRider_name(rs.getString(2));
 				p.setEntrydate(rs.getDate(3));
 				p.setIdentity(rs.getString(4));

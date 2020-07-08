@@ -1,21 +1,21 @@
 package cn.edu.zucc.takeout.model;
 
 public class BeanOrderdetial {
-	private String pro_id;
-	private String order_id;
+	private int pro_id;
+	private int order_id;
 	private int mount;
 	private float price;
 	private float perdiscount;
-	public String getPro_id() {
+	public int getPro_id() {
 		return pro_id;
 	}
-	public void setPro_id(String pro_id) {
+	public void setPro_id(int pro_id) {
 		this.pro_id = pro_id;
 	}
-	public String getOrder_id() {
+	public int getOrder_id() {
 		return order_id;
 	}
-	public void setOrder_id(String order_id) {
+	public void setOrder_id(int order_id) {
 		this.order_id = order_id;
 	}
 	public int getMount() {

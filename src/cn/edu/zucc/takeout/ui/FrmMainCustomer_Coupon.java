@@ -26,7 +26,7 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public class FrmMainCustomer_Coupon extends JFrame implements ActionListener{
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private JMenuBar menubar=new JMenuBar();
 	

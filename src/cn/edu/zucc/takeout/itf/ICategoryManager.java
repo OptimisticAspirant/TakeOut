@@ -8,7 +8,7 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public interface ICategoryManager {
 	
-	public BeanProductcategory addcate(String cateid, String name) throws BaseException;
+	public BeanProductcategory addcate(String name) throws BaseException;
 	
 	public void deletecate(BeanProductcategory cate) throws BaseException;
 	

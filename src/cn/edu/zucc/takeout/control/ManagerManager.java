@@ -14,17 +14,21 @@ import cn.edu.zucc.takeout.util.DBUtil;
 public class ManagerManager implements IManagerManager{
 	
 	@Override
-	public BeanManager reg(String userid,String username,String pwd,String pwd2) throws BaseException {
+	public BeanManager reg(int managerid,String username,String pwd,String pwd2) throws BaseException {
 		BeanManager result=new BeanManager();
         Connection conn=null;
-        if(userid.equals("")||username.equals("")||pwd.equals("")||pwd2.equals("")) {
+        if(username.equals("")||pwd.equals("")||pwd2.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
+        if(!pwd.equals(pwd2)) {
+            throw new BusinessException("两次密码不匹配");
+        }
         try {
-            conn=DBUtil.getConnection();
-            String sql="select count(*) from manager where manager_id='"+userid+"'";
-            java.sql.PreparedStatement st=conn.prepareStatement(sql);
-            ResultSet rs=st.executeQuery();
+        	conn=DBUtil.getConnection();
+            String sql="select count(*) from manager where manager_id=?";
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setInt(1, managerid);
+            ResultSet rs=pst.executeQuery();
             while(rs.next()) {
             	if(rs.getInt(1)!=0) {
                     throw new BusinessException("该管理员已存在");
@@ -34,13 +38,12 @@ public class ManagerManager implements IManagerManager{
                 throw new BusinessException("两次密码不匹配");
             }
             sql="insert into manager(manager_id,manager_name,manager_password) values(?,?,?)";
-            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            pst.setString(1,userid);
+            pst=conn.prepareStatement(sql);
+            pst.setInt(1, managerid);
             pst.setString(2,username);
             pst.setString(3,pwd);
             pst.execute();
 			pst.close();
-			result.setManager_id(userid);
 			result.setManager_name(username);
 			result.setManager_password(pwd);
         }catch(SQLException e) {
@@ -59,10 +62,10 @@ public class ManagerManager implements IManagerManager{
 	}
 	
 	@Override
-	public BeanManager login(String userid, String pwd) throws BaseException {
+	public BeanManager login(int userid, String pwd) throws BaseException {
 		BeanManager result=new BeanManager();
         Connection conn=null;
-        if(userid.equals("")||pwd.equals("")) {
+        if(pwd.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
         try {
@@ -76,7 +79,7 @@ public class ManagerManager implements IManagerManager{
             if(!rs.getString(3).equals(pwd)) {
                 throw new BusinessException("密码错误");
             }
-            result.setManager_id(rs.getString(1));
+            result.setManager_id(rs.getInt(1));
             result.setManager_name(rs.getString(2));
             result.setManager_password(rs.getString(3));
             rs.close();
@@ -105,7 +108,7 @@ public class ManagerManager implements IManagerManager{
 			conn=DBUtil.getConnection();
 			String sql="select * from manager where manager_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,user.getManager_id());
+			pst.setInt(1,user.getManager_id());
 			java.sql.ResultSet rs=pst.executeQuery();
 			if(!rs.next()) throw new BusinessException("登陆账号不存在");
 			if(!oldPwd.equals(user.getManager_password())) throw new BusinessException("原密码错误");
@@ -115,7 +118,7 @@ public class ManagerManager implements IManagerManager{
 			sql="update manager set manager_password=? where manager_id=?";
 			pst=conn.prepareStatement(sql);
 			pst.setString(1, newPwd);
-			pst.setString(2, user.getManager_id());
+			pst.setInt(2, user.getManager_id());
 			pst.execute();
 			pst.close();
 		} catch (SQLException e) {

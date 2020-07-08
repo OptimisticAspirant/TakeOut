@@ -7,7 +7,7 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public interface IRiderManager {
 	
-	public BeanRider addrider(String riderid, String ridername) throws BaseException;
+	public BeanRider addrider(String ridername) throws BaseException;
 	
 	public void deleterider(BeanRider rider) throws BaseException;
 	

@@ -11,7 +11,7 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public interface ICouponManager {
 
-	public void addcou(BeanShopkeeper shop, String coupid, Float amount, int count, String start, String end)
+	public void addcou(BeanShopkeeper shop,Float amount, int count, String start, String end)
 			throws BaseException;
 
 	public void deletecoup(BeanCoupon coup) throws BaseException;

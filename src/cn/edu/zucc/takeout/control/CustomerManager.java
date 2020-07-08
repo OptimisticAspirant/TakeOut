@@ -18,12 +18,12 @@ import cn.edu.zucc.takeout.util.DBUtil;
 public class CustomerManager implements ICustomerManager{
 	
 	@Override
-	public BeanCustomer reg(String userid, String username, String gender,String phonenumber,String mail,String city,String pwd,String pwd2) throws BaseException{
+	public BeanCustomer reg(int userid, String username, String gender,String phonenumber,String mail,String city,String pwd,String pwd2) throws BaseException{
 		BeanCustomer result=new BeanCustomer();
         Connection conn=null;SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String time = df.format(System.currentTimeMillis());
 		Timestamp createDate = Timestamp.valueOf(time);
-		if(userid.equals("")||username.equals("")||gender.equals("")||phonenumber.equals("")||mail.equals("")||city.equals("")||pwd.equals("")||pwd2.equals("")) {
+		if(username.equals("")||gender.equals("")||phonenumber.equals("")||mail.equals("")||city.equals("")||pwd.equals("")||pwd2.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
         try {
@@ -44,7 +44,7 @@ public class CustomerManager implements ICustomerManager{
             }
             sql="insert into customer(cust_id,cust_name,cust_gender,cust_password,cust_phone,cust_mail,cust_city,rig_time,ifVip) values(?,?,?,?,?,?,?,?,?)";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            pst.setString(1,userid);
+            pst.setInt(1,userid);
             pst.setString(2,username);
             pst.setString(3,gender);
             pst.setString(4,pwd);
@@ -80,10 +80,10 @@ public class CustomerManager implements ICustomerManager{
 	}
 	
 	@Override
-	public BeanCustomer login(String userid,String pwd)throws BaseException{
+	public BeanCustomer login(int userid,String pwd)throws BaseException{
 		BeanCustomer result=new BeanCustomer();
         Connection conn=null;
-        if(userid.equals("")||pwd.equals("")) {
+        if(pwd.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
         try {
@@ -97,7 +97,7 @@ public class CustomerManager implements ICustomerManager{
             if(!rs.getString(4).equals(pwd)) {
                 throw new BusinessException("密码错误");
             }
-            result.setCust_id(rs.getString(1));
+            result.setCust_id(rs.getInt(1));
             result.setCust_name(rs.getString(2));
             result.setCust_gender(rs.getString(3));
             result.setCust_password(rs.getString(4));
@@ -136,7 +136,7 @@ public class CustomerManager implements ICustomerManager{
 			String sql="update customer set cust_password=? where cust_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setString(1, newPwd);
-			pst.setString(2, user.getCust_id());
+			pst.setInt(2, user.getCust_id());
 			pst.execute();
 			pst.close();
 		} catch (SQLException e) {
@@ -165,7 +165,7 @@ public class CustomerManager implements ICustomerManager{
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanCustomer p=new BeanCustomer();
-				p.setCust_id(rs.getString(1));
+				p.setCust_id(rs.getInt(1));
 				p.setCust_name(rs.getString(2));
 				p.setCust_gender(rs.getString(3));
 				p.setCust_password(rs.getString(4));
@@ -201,7 +201,7 @@ public class CustomerManager implements ICustomerManager{
 			conn=DBUtil.getConnection();
 			String sql="select orderstate from productorder where cust_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            pst.setString(1,customer.getCust_id());
+            pst.setInt(1,customer.getCust_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.getResultSet();
 			String state=null;
@@ -211,7 +211,7 @@ public class CustomerManager implements ICustomerManager{
 			}
 			sql="delete from customer where cust_id=?";
 			pst=conn.prepareStatement(sql);
-            pst.setString(1,customer.getCust_id());
+            pst.setInt(1,customer.getCust_id());
 			pst.executeUpdate();
 			pst.close();
 		} catch (SQLException e) {

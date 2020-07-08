@@ -11,13 +11,13 @@ public class BeanProductcategory {
 	public static String[] getTabletitles() {
 		return tableTitles;
 	}
-	private String cate_id;
+	private int cate_id;
 	private String columnname;
 	private int pro_count;
-	public String getCate_id() {
+	public int getCate_id() {
 		return cate_id;
 	}
-	public void setCate_id(String cate_id) {
+	public void setCate_id(int cate_id) {
 		this.cate_id = cate_id;
 	}
 	public int getPro_count() {

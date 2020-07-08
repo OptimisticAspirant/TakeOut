@@ -1,25 +1,39 @@
 package cn.edu.zucc.takeout.model;
 
 public class BeanAddress {
-	private String add_id;
-	private String cust_id;
+	public static final String[] tableTitles={"编号","省","市","区","地址","联系人","电话"};
+	public String getCell(int col){
+		if(col==0) return add_id+"";
+		else if(col==1) return province+"";
+		else if(col==2) return city+"";
+		else if(col==3) return area+"";
+		else if(col==4) return location+"";
+		else if(col==5) return contacts+"";
+		else if(col==6) return phonenumber+"";
+		else return "";
+	}
+	private int add_id;
+	private int cust_id;
 	private String province;
 	private String city;
 	private String area;
 	private String location;
 	private String contacts;
 	private String phonenumber;
-	public String getAdd_id() {
+	public int getAdd_id() {
 		return add_id;
 	}
-	public void setAdd_id(String add_id) {
+	public void setAdd_id(int add_id) {
 		this.add_id = add_id;
 	}
-	public String getCust_id() {
+	public int getCust_id() {
 		return cust_id;
 	}
-	public void setCust_id(String cust_id) {
+	public void setCust_id(int cust_id) {
 		this.cust_id = cust_id;
+	}
+	public static String[] getTabletitles() {
+		return tableTitles;
 	}
 	public String getProvince() {
 		return province;

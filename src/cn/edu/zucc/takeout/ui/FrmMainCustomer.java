@@ -83,14 +83,10 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 		}else if(e.getSource()==this.btncoupon){
 			FrmMainCustomer_Coupon dlg=new FrmMainCustomer_Coupon();
 			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnaddress){
+			FrmMainCustomer_Address dlg=new FrmMainCustomer_Address();
+			dlg.setVisible(true);
 		}
-//			else if(e.getSource()==this.btnpro){
-//			FrmMainManager_Category dlg=new FrmMainManager_Category();
-//			dlg.setVisible(true);
-//		}else if(e.getSource()==this.btnuser){
-//			FrmMainManager_User dlg=new FrmMainManager_User();
-//			dlg.setVisible(true);
-//		}
 	}
 	
 }

@@ -87,7 +87,7 @@ public class FrmManagerRegister extends JDialog implements ActionListener{
 		if(e.getSource()==this.btnCancel)
 			this.setVisible(false);
 		else if(e.getSource()==this.btnOk){
-			String userid=this.edtUserId.getText();
+			int userid=Integer.parseInt(this.edtUserId.getText());
 			String username=this.edtUserName.getText();
 			String pwd1=new String(this.edtPwd.getPassword());
 			String pwd2=new String(this.edtPwd2.getPassword());

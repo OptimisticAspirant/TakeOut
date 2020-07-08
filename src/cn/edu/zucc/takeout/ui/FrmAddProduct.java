@@ -95,7 +95,7 @@ public class FrmAddProduct extends JDialog implements ActionListener{
 			return;
 		}
 		else if(e.getSource()==this.btnOk){
-			String proid=this.edtID.getText();
+			int proid=Integer.parseInt(this.edtID.getText());
 			int selectedId=this.edtCateId.getSelectedIndex();
 			String category=cateIdList.get(selectedId-1);
 			String proname=this.edtCatename.getText();

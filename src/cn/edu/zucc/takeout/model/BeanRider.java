@@ -14,14 +14,14 @@ public class BeanRider {
 	public static String[] getTabletitles() {
 		return tableTitles;
 	}
-	private String rider_id;
+	private int rider_id;
 	private String rider_name;
 	private Date entrydate;
 	private String identity;
-	public String getRider_id() {
+	public int getRider_id() {
 		return rider_id;
 	}
-	public void setRider_id(String rider_id) {
+	public void setRider_id(int rider_id) {
 		this.rider_id = rider_id;
 	}
 	public String getRider_name() {

@@ -27,8 +27,6 @@ public class FrmRiderAdd extends JDialog implements ActionListener{
 	private JPanel workPane = new JPanel();
 	private Button btnOk = new Button("确定");
 	private Button btnCancel = new Button("取消");
-	private JLabel labelId = new JLabel("骑手编号：");
-	private JTextField edtId = new JTextField(20);
 	private JLabel labelName = new JLabel("骑手姓名：");
 	private JTextField edtName = new JTextField(20);
 	
@@ -38,13 +36,11 @@ public class FrmRiderAdd extends JDialog implements ActionListener{
 		toolBar.add(btnOk);
 		toolBar.add(btnCancel);
 		this.getContentPane().add(toolBar, BorderLayout.SOUTH);
-		workPane.add(labelId);
-		workPane.add(edtId);
 		workPane.add(labelName);
 		workPane.add(edtName);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
-		this.setSize(320, 130);
-		// 屏幕居中显示
+		this.setSize(320, 100);
+		
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.setLocation((int) (width - this.getWidth()) / 2,
@@ -61,10 +57,9 @@ public class FrmRiderAdd extends JDialog implements ActionListener{
 			return;
 		}
 		else if(e.getSource()==this.btnOk){
-			String riderid=this.edtId.getText();
 			String ridername=this.edtName.getText();
 			try {
-				TakeOutUtil.riderManager.addrider(riderid, ridername);
+				TakeOutUtil.riderManager.addrider(ridername);
 				this.setVisible(false);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);

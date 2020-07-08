@@ -13,15 +13,15 @@ public class BeanShopkeeper {
 	public static String[] getTabletitles() {
 		return tableTitles;
 	}
-	private String shop_id;
+	private int shop_id;
 	private String shop_name;
 	private float shop_star;
 	private float per_consume;
 	private int total_sale;
-	public String getShop_id() {
+	public int getShop_id() {
 		return shop_id;
 	}
-	public void setShop_id(String shop_id) {
+	public void setShop_id(int shop_id) {
 		this.shop_id = shop_id;
 	}
 	public int getTotal_sale() {

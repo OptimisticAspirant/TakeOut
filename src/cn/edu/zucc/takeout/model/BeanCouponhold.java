@@ -5,7 +5,7 @@ import java.util.Date;
 public class BeanCouponhold {
 	public static final String[] tableTitles={"优惠券编号","商家编号","优惠金额","拥有数量","失效时间"};
 	public String getCell(int col){
-		if(col==0) return coup_id;
+		if(col==0) return coup_id+"";
 		else if(col==1) return shop_id+"";
 		else if(col==2) return subtract+"";
 		else if(col==3) return hold_mount+"";
@@ -15,9 +15,9 @@ public class BeanCouponhold {
 	public static String[] getTabletitles() {
 		return tableTitles;
 	}
-	private String coup_id;
-	private String cust_id;
-	private String shop_id;
+	private int coup_id;
+	private int cust_id;
+	private int shop_id;
 	private float subtract;
 	public float getSubtract() {
 		return subtract;
@@ -27,22 +27,22 @@ public class BeanCouponhold {
 	}
 	private int hold_mount;
 	private Date hold_deadline;
-	public String getCoup_id() {
+	public int getCoup_id() {
 		return coup_id;
 	}
-	public void setCoup_id(String coup_id) {
+	public void setCoup_id(int coup_id) {
 		this.coup_id = coup_id;
 	}
-	public String getCust_id() {
+	public int getCust_id() {
 		return cust_id;
 	}
-	public void setCust_id(String cust_id) {
+	public void setCust_id(int cust_id) {
 		this.cust_id = cust_id;
 	}
-	public String getShop_id() {
+	public int getShop_id() {
 		return shop_id;
 	}
-	public void setShop_id(String shop_id) {
+	public void setShop_id(int shop_id) {
 		this.shop_id = shop_id;
 	}
 	public int getHold_mount() {

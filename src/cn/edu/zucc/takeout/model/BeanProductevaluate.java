@@ -3,29 +3,29 @@ package cn.edu.zucc.takeout.model;
 import java.util.Date;
 
 public class BeanProductevaluate {
-	private String shop_id;
-	private String pro_id;
-	private String cust_id;
+	private int shop_id;
+	private int pro_id;
+	private int cust_id;
 	private String content;
 	private Date eval_date;
 	private float star;
 	private String photo;
-	public String getShop_id() {
+	public int getShop_id() {
 		return shop_id;
 	}
-	public void setShop_id(String shop_id) {
+	public void setShop_id(int shop_id) {
 		this.shop_id = shop_id;
 	}
-	public String getPro_id() {
+	public int getPro_id() {
 		return pro_id;
 	}
-	public void setPro_id(String pro_id) {
+	public void setPro_id(int pro_id) {
 		this.pro_id = pro_id;
 	}
-	public String getCust_id() {
+	public int getCust_id() {
 		return cust_id;
 	}
-	public void setCust_id(String cust_id) {
+	public void setCust_id(int cust_id) {
 		this.cust_id = cust_id;
 	}
 	public String getContent() {

@@ -56,7 +56,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 		workPane.add(btnCustomer);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
 		this.setSize(280, 160);
-		// ∆¡ƒªæ”÷–œ‘ æ
+		
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.setLocation((int) (width - this.getWidth()) / 2,
@@ -77,7 +77,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.btnLogin && btnManager.isSelected()) {
-			String userid=new String(this.edtUserId.getText());
+			int userid=Integer.parseInt(this.edtUserId.getText());
 			String pwd=new String(this.edtPwd.getPassword());
 			try {
 				BeanManager.currentLoginUser= TakeOutUtil.managerManager.login(userid, pwd);
@@ -88,7 +88,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 			}
 			this.setVisible(false);
 		} else if (e.getSource() == this.btnLogin && btnCustomer.isSelected()) {
-			String userid=new String(this.edtUserId.getText());
+			int userid=Integer.parseInt(this.edtUserId.getText());
 			String pwd=new String(this.edtPwd.getPassword());
 			try {
 				BeanCustomer.currentLoginUser= TakeOutUtil.customerManager.login(userid, pwd);

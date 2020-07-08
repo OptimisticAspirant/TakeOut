@@ -15,29 +15,20 @@ import cn.edu.zucc.takeout.util.DBUtil;
 public class CategoryManager implements ICategoryManager{
 	
 	@Override
-	public BeanProductcategory addcate(String cateid, String name) throws BaseException{
+	public BeanProductcategory addcate(String name) throws BaseException{
 		BeanProductcategory result=new BeanProductcategory();
         Connection conn=null;
-        if(cateid.equals("")||name.equals("")) {
+        if(name.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
         try {
             conn=DBUtil.getConnection();
-            String sql="select * from productcategory where cate_id=?";
+            String sql="insert into productcategory(columnname,pro_count) values(?,?)";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            pst.setString(1,cateid);
-            ResultSet rs=pst.executeQuery();
-            if(rs.next()) {
-            	throw new BusinessException("该用户已存在");
-            }
-            sql="insert into productcategory(cate_id,columnname,pro_count) values(?,?,?)";
-            pst=conn.prepareStatement(sql);
-            pst.setString(1,cateid);
-            pst.setString(2,name);
-            pst.setInt(3,0);
+            pst.setString(1,name);
+            pst.setInt(2,0);
             pst.execute();
 			pst.close();
-			result.setCate_id(cateid);
 			result.setColumnname(name);
 			result.setPro_count(0);
         }catch(SQLException e) {
@@ -62,7 +53,7 @@ public class CategoryManager implements ICategoryManager{
 			conn=DBUtil.getConnection();
 			String sql="select * from product where cate_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1, cate.getCate_id());
+			pst.setInt(1, cate.getCate_id());
 			pst.execute();
 			ResultSet rs=pst.getResultSet();
 			if(rs.next()) throw new BusinessException("该分类下存在商品，不能删除!");
@@ -70,7 +61,7 @@ public class CategoryManager implements ICategoryManager{
 			pst.close();
 			sql="delete from productcategory where cate_id=?";
 			pst=conn.prepareStatement(sql);
-			pst.setString(1, cate.getCate_id());
+			pst.setInt(1, cate.getCate_id());
 			pst.executeUpdate();
 			pst.close();
 		} catch (SQLException e) {
@@ -100,7 +91,7 @@ public class CategoryManager implements ICategoryManager{
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanProductcategory p=new BeanProductcategory();
-				p.setCate_id(rs.getString(1));
+				p.setCate_id(rs.getInt(1));
 				p.setColumnname(rs.getString(2));
 				p.setPro_count(rs.getInt(3));
 				result.add(p);
@@ -133,7 +124,7 @@ public class CategoryManager implements ICategoryManager{
 			String sql="update productcategory set columnname=? where cate_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setString(1, name);
-			pst.setString(2, cate.getCate_id());
+			pst.setInt(2, cate.getCate_id());
 			pst.executeUpdate();
 			pst.close();
 		} catch (SQLException e) {

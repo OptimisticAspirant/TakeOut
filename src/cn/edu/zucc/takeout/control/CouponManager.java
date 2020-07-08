@@ -22,9 +22,9 @@ import cn.edu.zucc.takeout.util.DBUtil;
 public class CouponManager implements ICouponManager{
 	
 	@Override
-	public void addcou(BeanShopkeeper shop,String coupid,Float amount,int count,String start,String end) throws BaseException{
+	public void addcou(BeanShopkeeper shop,Float amount,int count,String start,String end) throws BaseException{
         Connection conn=null;
-        if(coupid.equals("")||amount==null) {
+        if(amount==null||start.equals("")||end.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -39,21 +39,13 @@ public class CouponManager implements ICouponManager{
 		}
         try {
             conn=DBUtil.getConnection();
-            String sql="select * from coupon where coup_id=?";
+            String sql="insert into coupon(shop_id,coup_amount,coup_count,startdate,enddate) values(?,?,?,?,?)";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            pst.setString(1,coupid);
-            ResultSet rs=pst.executeQuery();
-            if(rs.next()) {
-            	throw new BusinessException("该优惠券已存在");
-            }
-            sql="insert into coupon(coup_id,shop_id,coup_amount,coup_count,startdate,enddate) values(?,?,?,?,?,?)";
-            pst=conn.prepareStatement(sql);
-            pst.setString(1,coupid);
-            pst.setString(2,shop.getShop_id());
-            pst.setFloat(3,amount);
-            pst.setInt(4, count);
-            pst.setDate(5, starttime);
-            pst.setDate(6, endtime);
+            pst.setInt(1,shop.getShop_id());
+            pst.setFloat(2,amount);
+            pst.setInt(3, count);
+            pst.setDate(4, starttime);
+            pst.setDate(5, endtime);
             pst.execute();
 			pst.close();
         }catch(SQLException e) {
@@ -77,7 +69,7 @@ public class CouponManager implements ICouponManager{
 			conn=DBUtil.getConnection();
 			String sql="select * from couponhold where coup_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1, coup.getCoup_id());
+			pst.setInt(1, coup.getCoup_id());
 			pst.execute();
 			ResultSet rs=pst.getResultSet();
 			if(rs.next()) throw new BusinessException("该优惠券属于某个用户并且暂未使用，不能删除!");
@@ -85,7 +77,7 @@ public class CouponManager implements ICouponManager{
 			pst.close();
 			sql="delete from coup where coup_id=?";
 			pst=conn.prepareStatement(sql);
-			pst.setString(1, coup.getCoup_id());
+			pst.setInt(1, coup.getCoup_id());
 			pst.executeUpdate();
 			pst.close();
 		} catch (SQLException e) {
@@ -111,12 +103,12 @@ public class CouponManager implements ICouponManager{
 			conn=DBUtil.getConnection();
 			String sql="select coup_id,coup_amount,coup_count,startdate,enddate from coupon where shop_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,shop.getShop_id());
+			pst.setInt(1,shop.getShop_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanCoupon p=new BeanCoupon();
-				p.setCoup_id(rs.getString(1));
+				p.setCoup_id(rs.getInt(1));
 				p.setCoup_amount(rs.getFloat(2));
 				p.setCoup_count(rs.getInt(3));
 				p.setStartdate(rs.getDate(4));
@@ -148,13 +140,13 @@ public class CouponManager implements ICouponManager{
 			conn=DBUtil.getConnection();
 			String sql="select coup_id,shop_id,hold_mount,subtract,hold_deadline from couponhold where cust_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,customer.getCust_id());
+			pst.setInt(1,customer.getCust_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanCouponhold p=new BeanCouponhold();
-				p.setCoup_id(rs.getString(1));
-				p.setShop_id(rs.getString(2));
+				p.setCoup_id(rs.getInt(1));
+				p.setShop_id(rs.getInt(2));
 				p.setHold_mount(rs.getInt(3));
 				p.setSubtract(rs.getFloat(4));
 				p.setHold_deadline(rs.getDate(5));
@@ -185,13 +177,13 @@ public class CouponManager implements ICouponManager{
 			conn=DBUtil.getConnection();
 			String sql="select shop_id,coup_id,collect_count,collect_require from discount where cust_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,customer.getCust_id());
+			pst.setInt(1,customer.getCust_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanDiscount p=new BeanDiscount();
-				p.setShop_id(rs.getString(1));
-				p.setCoup_id(rs.getString(2));
+				p.setShop_id(rs.getInt(1));
+				p.setCoup_id(rs.getInt(2));
 				p.setCollect_count(rs.getInt(3));
 				p.setCollect_require(rs.getInt(4));
 				result.add(p);
@@ -223,8 +215,8 @@ public class CouponManager implements ICouponManager{
 			conn=DBUtil.getConnection();
 			String sql="select collect_count,collect_require from couponhold where cust_id=? and coup_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,collect.getCust_id());
-			pst.setString(2,collect.getCoup_id());
+			pst.setInt(1,collect.getCust_id());
+			pst.setInt(2,collect.getCoup_id());
 			pst.executeUpdate();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
@@ -239,12 +231,12 @@ public class CouponManager implements ICouponManager{
 			sql="update couponhold set collect_count=collect_count-? where cust_id=?";
 			pst=conn.prepareStatement(sql);
 			pst.setInt(1,require);
-			pst.setString(2,collect.getCust_id());
+			pst.setInt(2,collect.getCust_id());
 			pst.executeUpdate();
 			pst.close();
 			sql="select coup_count,enddate from coupon where coup_id=?";
 			pst=conn.prepareStatement(sql);
-			pst.setString(1,collect.getCoup_id());
+			pst.setInt(1,collect.getCoup_id());
 			pst.executeUpdate();
 			rs=pst.executeQuery();
 			while(rs.next()) {
@@ -255,9 +247,9 @@ public class CouponManager implements ICouponManager{
 			pst.close();
 			sql="insert into couponhold(coup_id,cust_id,shop_id,hold_mount,subtract,hold_deadline) values(?,?,?,?,?,?)";
 			pst=conn.prepareStatement(sql);
-			pst.setString(1,collect.getCoup_id());
-			pst.setString(2,collect.getCust_id());
-			pst.setString(3, collect.getShop_id());
+			pst.setInt(1,collect.getCoup_id());
+			pst.setInt(2,collect.getCust_id());
+			pst.setInt(3, collect.getShop_id());
 			pst.setInt(4, 1);
 			pst.setFloat(5, subtract);
 			pst.setDate(6, deadline);
