@@ -72,7 +72,7 @@ public class ProductManager implements IProductManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select pro_id,shop_id,cate_id,pro_name,pro_price,pro_discount from product where shop_id=? order by pro_id";
+			String sql="select pro_id,shop_id,cate_id,pro_name,pro_price,pro_discount from product where shop_id=? order by cate_id";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setInt(1, shop.getShop_id());
 			pst.execute();

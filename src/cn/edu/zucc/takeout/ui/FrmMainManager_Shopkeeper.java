@@ -251,7 +251,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
-				System.out.println("shop:"+i);
 				if(i<0) {
 					return;
 				}
@@ -270,7 +269,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTablePro.getSelectedRow();
-				System.out.println("pro:"+i);
 				if(i<0) {
 					return;
 				}
@@ -283,7 +281,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTableCou.getSelectedRow();
-				System.out.println("cou:"+i);
 				if(i<0) {
 					return;
 				}
@@ -296,7 +293,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTableMan.getSelectedRow();
-				System.out.println("man:"+i);
 				if(i<0) {
 					return;
 				}

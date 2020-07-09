@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cn.edu.zucc.takeout.itf.ICustomerManager;
@@ -284,6 +285,51 @@ public class CustomerManager implements ICustomerManager{
 					e.printStackTrace();
 				}
 		}
+	}
+	
+	@Override
+	public String VipInfomation(BeanCustomer customer) throws BaseException{
+		String info=null;
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select ifVIP from customer where cust_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+			pst.execute();
+			java.sql.ResultSet rs=pst.getResultSet();
+			String ifVIP=null;
+			if(rs.next()) {
+				ifVIP=rs.getString(1);
+			}
+			if(ifVIP.equals("是")) {
+				sql="select VIPdeadline from customer where cust_id=?";
+				pst=conn.prepareStatement(sql);
+	            pst.setInt(1,customer.getCust_id());
+				pst.execute();
+				rs=pst.getResultSet();
+				Date deadline=null;
+				if(rs.next()) {
+					deadline=rs.getDate(1);
+				}
+				return "您的会员有效期截至"+deadline+" !";
+			}else {
+				return "您还不是会员！ 您可点击菜单栏“会员注册”按钮进行会员申请！下次登录时可查看会员截止日期！";
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return info;
 	}
 	
 }

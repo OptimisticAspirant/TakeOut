@@ -1,7 +1,7 @@
 package cn.edu.zucc.takeout.model;
 
 public class BeanAddress {
-	public static final String[] tableTitles={"编号","省","市","区","地址","联系人","电话"};
+	public static final String[] tableTitles={"地址编号","省","市","区","地址","联系人","电话"};
 	public String getCell(int col){
 		if(col==0) return add_id+"";
 		else if(col==1) return province+"";

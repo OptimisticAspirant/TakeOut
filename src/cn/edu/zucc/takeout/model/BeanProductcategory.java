@@ -1,7 +1,7 @@
 package cn.edu.zucc.takeout.model;
 
 public class BeanProductcategory {
-	public static final String[] tableTitles={"编号","名称","数量"};
+	public static final String[] tableTitles={"分类编号","分类名称","分类下的商品数量"};
 	public String getCell(int col){
 		if(col==0) return cate_id+"";
 		else if(col==1) return columnname;

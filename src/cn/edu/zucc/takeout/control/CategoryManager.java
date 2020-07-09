@@ -85,7 +85,7 @@ public class CategoryManager implements ICategoryManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select cate_id,columnname,pro_count from productcategory";
+			String sql="select cate_id,columnname,pro_count from productcategory order by cate_id";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();

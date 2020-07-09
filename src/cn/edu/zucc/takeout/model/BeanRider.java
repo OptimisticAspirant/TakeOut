@@ -3,7 +3,7 @@ package cn.edu.zucc.takeout.model;
 import java.util.Date;
 
 public class BeanRider {
-	public static final String[] tableTitles={"编号","姓名","入职时间","身份"};
+	public static final String[] tableTitles={"骑手编号","骑手姓名","入职时间","身份"};
 	public String getCell(int col){
 		if(col==0) return rider_id+"";
 		else if(col==1) return rider_name;

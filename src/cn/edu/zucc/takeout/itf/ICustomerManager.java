@@ -18,5 +18,7 @@ public interface ICustomerManager {
 	public void deleteuser(BeanCustomer customer) throws BaseException;
 
 	public void modify(BeanCustomer customer,String username, String gender, String phonenumber, String mail, String city) throws BaseException;
+
+	public String VipInfomation(BeanCustomer customer) throws BaseException;
 	
 }

@@ -1,7 +1,7 @@
 package cn.edu.zucc.takeout.model;
 
 public class BeanShopkeeper {
-	public static final String[] tableTitles={"编号","名称","星级","人均消费","总销量"};
+	public static final String[] tableTitles={"商家编号","商家名称","商家星级","人均消费","总销量"};
 	public String getCell(int col){
 		if(col==0) return shop_id+"";
 		else if(col==1) return shop_name;
