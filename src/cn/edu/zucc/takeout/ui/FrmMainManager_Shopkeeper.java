@@ -231,11 +231,27 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	    toolBar.add(btnmandelete);
 	    this.setJMenuBar(menubar);
 	    
+	    JPanel right=new JPanel(new BorderLayout());
+	    JPanel rightNorth=new JPanel(new BorderLayout());
+	    JPanel rightSouth=new JPanel(new BorderLayout());
+	    JPanel rightSouthLeft=new JPanel(new BorderLayout());
+	    JPanel rightSouthRight=new JPanel(new BorderLayout());
+	    this.getContentPane().add(new JScrollPane(this.dataTableShop), BorderLayout.WEST);
+	    this.getContentPane().add(right, BorderLayout.CENTER);
+	    right.add(rightNorth, BorderLayout.NORTH);
+	    right.add(rightSouth, BorderLayout.SOUTH);
+	    rightNorth.add(new JScrollPane(this.dataTablePro), BorderLayout.CENTER);
+	    rightSouth.add(rightSouthLeft,BorderLayout.WEST);
+	    rightSouth.add(rightSouthRight,BorderLayout.CENTER);
+	    rightSouthLeft.add(new JScrollPane(this.dataTableCou), BorderLayout.CENTER);
+	    rightSouthRight.add(new JScrollPane(this.dataTableMan), BorderLayout.CENTER);
+	    
 	    this.dataTableShop.addMouseListener(new MouseAdapter (){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
+				System.out.println("shop:"+i);
 				if(i<0) {
 					return;
 				}
@@ -247,13 +263,14 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	    	
 	    });
 	    
-	    this.reloadShopTable();
+	    
 	    
 	    this.dataTablePro.addMouseListener(new MouseAdapter (){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTablePro.getSelectedRow();
+				System.out.println("pro:"+i);
 				if(i<0) {
 					return;
 				}
@@ -266,6 +283,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTableCou.getSelectedRow();
+				System.out.println("cou:"+i);
 				if(i<0) {
 					return;
 				}
@@ -278,6 +296,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMainManager_Shopkeeper.this.dataTableMan.getSelectedRow();
+				System.out.println("man:"+i);
 				if(i<0) {
 					return;
 				}
@@ -285,16 +304,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	    	
 	    });
 
-	    JPanel right=new JPanel(new BorderLayout());
-	    JPanel rightSouth=new JPanel(new BorderLayout());
-	    JPanel rightNorth=new JPanel(new BorderLayout());
-	    this.getContentPane().add(new JScrollPane(this.dataTableShop), BorderLayout.WEST);
-	    this.getContentPane().add(right, BorderLayout.CENTER);
-	    right.add(rightNorth, BorderLayout.NORTH);
-	    right.add(rightSouth, BorderLayout.SOUTH);
-	    rightNorth.add(new JScrollPane(this.dataTablePro), BorderLayout.CENTER);
-	    rightSouth.add(new JScrollPane(this.dataTableCou), BorderLayout.WEST);
-	    rightSouth.add(new JScrollPane(this.dataTableMan), BorderLayout.CENTER);
+	    this.reloadShopTable(); 
 	    
 	}
 
@@ -332,7 +342,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				curShop=allShop.get(i);
 				shop=curShop;
 			}
-			FrmAddProduct dlg=new FrmAddProduct(this,"添加商品",true);
+			FrmProductAdd dlg=new FrmProductAdd(this,"添加商品",true);
 			dlg.setVisible(true);
 			this.reloadShopTable();
 		    this.reloadProTable();

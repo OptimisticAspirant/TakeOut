@@ -16,5 +16,7 @@ public interface ICustomerManager {
 	public List<BeanCustomer> loadAll() throws BaseException;
 
 	public void deleteuser(BeanCustomer customer) throws BaseException;
+
+	public void modify(BeanCustomer customer,String username, String gender, String phonenumber, String mail, String city) throws BaseException;
 	
 }

@@ -228,4 +228,62 @@ public class CustomerManager implements ICustomerManager{
 		}
 	}
 	
+	@Override
+	public void modify(BeanCustomer customer,String username, String gender, String phonenumber, String mail, String city) throws BaseException{
+		Connection conn=null;
+		if(username.equals("")||username.equals("")||username.equals("")||username.equals("")||username.equals("")) {
+			throw new BusinessException("请将信息填写完整！");
+		}
+		try {
+			conn=DBUtil.getConnection();
+			String sql="update customer set cust_name=? where cust_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+            pst.setString(2,username);
+			pst.executeUpdate();
+			pst.close();
+			sql="update customer set cust_name=? where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+            pst.setString(2,username);
+			pst.executeUpdate();
+			pst.close();
+			sql="update customer set cust_gender=? where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+            pst.setString(2,gender);
+			pst.executeUpdate();
+			pst.close();
+			sql="update customer set cust_phone=? where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+            pst.setString(2,phonenumber);
+			pst.executeUpdate();
+			pst.close();
+			sql="update customer set cust_mail=? where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+            pst.setString(2,mail);
+			pst.executeUpdate();
+			pst.close();
+			sql="update customer set cust_city=? where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+            pst.setString(2,city);
+			pst.executeUpdate();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	
 }

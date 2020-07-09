@@ -22,7 +22,7 @@ import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
 
 
-public class FrmAddProduct extends JDialog implements ActionListener{
+public class FrmProductAdd extends JDialog implements ActionListener{
 	
 	public BeanShopkeeper shop=null;
 	private JPanel toolBar = new JPanel();
@@ -41,7 +41,7 @@ public class FrmAddProduct extends JDialog implements ActionListener{
 	private JTextField edtCatename = new JTextField(15);
 	private JTextField edtPrice = new JTextField(15);
 	private JTextField edtSale = new JTextField(15);
-	public FrmAddProduct(JFrame f, String s, boolean b) {
+	public FrmProductAdd(JFrame f, String s, boolean b) {
 		super(f, s, b);
 		toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		toolBar.add(btnOk);

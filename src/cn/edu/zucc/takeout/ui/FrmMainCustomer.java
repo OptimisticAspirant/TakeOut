@@ -86,6 +86,9 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 		}else if(e.getSource()==this.btnaddress){
 			FrmMainCustomer_Address dlg=new FrmMainCustomer_Address();
 			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnselfinfo){
+			FrmMainCustomer_Selfinfo dlg=new FrmMainCustomer_Selfinfo(this,"个人信息修改",true);
+			dlg.setVisible(true);
 		}
 	}
 	
