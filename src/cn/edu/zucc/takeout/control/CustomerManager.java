@@ -40,7 +40,7 @@ public class CustomerManager implements ICustomerManager{
                 throw new BusinessException("两次密码不匹配");
             }
             if(!gender.equals("男")&&!gender.equals("女")) {
-            	throw new BusinessException("请在性别栏输入：女or男");
+            	throw new BusinessException("请在性别栏输入：“女” or “男”");
             }
             sql="insert into customer(cust_id,cust_name,cust_gender,cust_password,cust_phone,cust_mail,cust_city,rig_time,ifVip) values(?,?,?,?,?,?,?,?,?)";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);

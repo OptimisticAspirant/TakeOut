@@ -25,7 +25,7 @@ public class CouponManager implements ICouponManager{
 	@Override
 	public void addcou(BeanShopkeeper shop,Float amount,int count,String start,String end) throws BaseException{
         Connection conn=null;
-        if(amount==null||start.equals("")||end.equals("")) {
+        if(start.equals("")||end.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
         }
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -136,8 +136,11 @@ public class CouponManager implements ICouponManager{
 	@Override
 	public void addpreferential(BeanShopkeeper shop,Float require,Float cut,String ifcoupon) throws BaseException{
         Connection conn=null;
-        if(require==null||cut==null||ifcoupon.equals("")) {
+        if(ifcoupon.equals("")) {
         	throw new BusinessException("请将信息填写完整！");
+        }
+        if(!ifcoupon.equals("是")&&!ifcoupon.equals("否")) {
+        	throw new BusinessException("请在能否叠加优惠券处填 “是” 或 “否” ！");
         }
         try {
             conn=DBUtil.getConnection();

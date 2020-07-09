@@ -27,6 +27,7 @@ import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
 
 public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
+	
 	private static final long serialVersionUID = 1L;
 	
 	private JMenuBar menubar=new JMenuBar();
@@ -122,7 +123,7 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			for(int j=0;j<BeanCoupon.tableTitles.length;j++)
 				tblCouData[i][j]=allCoupon.get(i).getCell(j);
 		}
-		tabProModel.setDataVector(tblCouData,tblCouTitle);
+		tabCouModel.setDataVector(tblCouData,tblCouTitle);
 		this.dataTableCou.validate();
 		this.dataTableCou.repaint();
 	}
@@ -134,14 +135,14 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblCouData =  new Object[allCoupon.size()][BeanCoupon.tableTitles.length];
-		for(int i=0;i<allCoupon.size();i++){
-			for(int j=0;j<BeanCoupon.tableTitles.length;j++)
-				tblCouData[i][j]=allCoupon.get(i).getCell(j);
+		tblManData =  new Object[allMan.size()][BeanDiscount.tableTitles.length];
+		for(int i=0;i<allMan.size();i++){
+			for(int j=0;j<BeanDiscount.tableTitles.length;j++)
+				tblManData[i][j]=allMan.get(i).getCell(j);
 		}
-		tabProModel.setDataVector(tblCouData,tblCouTitle);
-		this.dataTableCou.validate();
-		this.dataTableCou.repaint();
+		tabManModel.setDataVector(tblManData,tblManTitle);
+		this.dataTableMan.validate();
+		this.dataTableMan.repaint();
 	}
 	
 	private void reloadShopProTabel(int shopIdx){
@@ -173,15 +174,15 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblProData =new Object[shopPros.size()][tblProTitle.length];
-		for(int i=0;i<shopPros.size();i++){
-			for(int j=0;j<tblProTitle.length;j++)
-				tblProData[i][j]=shopPros.get(i).getCell(j);
+		tblManData =new Object[shopMans.size()][tblManTitle.length];
+		for(int i=0;i<shopMans.size();i++){
+			for(int j=0;j<tblManTitle.length;j++)
+				tblManData[i][j]=shopMans.get(i).getCell(j);
 		}
 		
-		tabProModel.setDataVector(tblProData,tblProTitle);
-		this.dataTablePro.validate();
-		this.dataTablePro.repaint();
+		tabManModel.setDataVector(tblManData,tblManTitle);
+		this.dataTableMan.validate();
+		this.dataTableMan.repaint();
 	}
 	
 	private void reloadShopCouTabel(int shopIdx){
@@ -193,15 +194,15 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblProData =new Object[shopPros.size()][tblProTitle.length];
-		for(int i=0;i<shopPros.size();i++){
-			for(int j=0;j<tblProTitle.length;j++)
-				tblProData[i][j]=shopPros.get(i).getCell(j);
+		tblCouData =new Object[shopCous.size()][tblCouTitle.length];
+		for(int i=0;i<shopCous.size();i++){
+			for(int j=0;j<tblCouTitle.length;j++)
+				tblCouData[i][j]=shopCous.get(i).getCell(j);
 		}
 		
-		tabProModel.setDataVector(tblProData,tblProTitle);
-		this.dataTablePro.validate();
-		this.dataTablePro.repaint();
+		tabCouModel.setDataVector(tblCouData,tblCouTitle);
+		this.dataTableCou.validate();
+		this.dataTableCou.repaint();
 	}
 	
 	public FrmMainManager_Shopkeeper(){
@@ -213,6 +214,10 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 	    this.btnshopdelete.addActionListener(this);
 	    this.btnproadd.addActionListener(this);
 	    this.btnprodelete.addActionListener(this);
+		this.btncouadd.addActionListener(this);
+	    this.btncoudelete.addActionListener(this);
+	    this.btnmanadd.addActionListener(this);
+	    this.btnmandelete.addActionListener(this);
 	    
 	    toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
@@ -234,21 +239,63 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				if(i<0) {
 					return;
 				}
+				curShop=allShop.get(i);
 				FrmMainManager_Shopkeeper.this.reloadShopProTabel(i);
+				FrmMainManager_Shopkeeper.this.reloadShopCouTabel(i);
+				FrmMainManager_Shopkeeper.this.reloadShopManTabel(i);
+			}
+	    	
+	    });
+	    
+	    this.reloadShopTable();
+	    
+	    this.dataTablePro.addMouseListener(new MouseAdapter (){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int i=FrmMainManager_Shopkeeper.this.dataTablePro.getSelectedRow();
+				if(i<0) {
+					return;
+				}
+			}
+	    	
+	    });
+	  
+	    this.dataTableCou.addMouseListener(new MouseAdapter (){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int i=FrmMainManager_Shopkeeper.this.dataTableCou.getSelectedRow();
+				if(i<0) {
+					return;
+				}
+			}
+	    	
+	    });
+	    
+	    this.dataTableMan.addMouseListener(new MouseAdapter (){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int i=FrmMainManager_Shopkeeper.this.dataTableMan.getSelectedRow();
+				if(i<0) {
+					return;
+				}
 			}
 	    	
 	    });
 
 	    JPanel right=new JPanel(new BorderLayout());
 	    JPanel rightSouth=new JPanel(new BorderLayout());
+	    JPanel rightNorth=new JPanel(new BorderLayout());
 	    this.getContentPane().add(new JScrollPane(this.dataTableShop), BorderLayout.WEST);
 	    this.getContentPane().add(right, BorderLayout.CENTER);
-	    right.add(new JScrollPane(this.dataTablePro), BorderLayout.NORTH);
+	    right.add(rightNorth, BorderLayout.NORTH);
 	    right.add(rightSouth, BorderLayout.SOUTH);
+	    rightNorth.add(new JScrollPane(this.dataTablePro), BorderLayout.CENTER);
 	    rightSouth.add(new JScrollPane(this.dataTableCou), BorderLayout.WEST);
 	    rightSouth.add(new JScrollPane(this.dataTableMan), BorderLayout.CENTER);
 	    
-	    this.reloadShopTable();
 	}
 
 	@Override
@@ -258,7 +305,6 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			FrmShopkeeperAdd dlg=new FrmShopkeeperAdd(this,"添加商家",true);
 			dlg.setVisible(true);
 			this.reloadShopTable();
-		    this.reloadProTable();
 		}else if(e.getSource()==this.btnshopdelete){
 			int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
 			if(i<0) {
@@ -271,6 +317,8 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				TakeOutUtil.shopkeeperManager.deleteshop(this.curShop);
 				this.reloadShopTable();
 			    this.reloadProTable();
+			    this.reloadCouTable();
+			    this.reloadManTable();
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;
@@ -294,12 +342,69 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "请选择商品", "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
+			    this.reloadProTable();
 				curProduct=allProduct.get(i);
 			}
 			try {
 				TakeOutUtil.productManager.deleteProduct(this.curProduct);
 				this.reloadShopTable();
 			    this.reloadProTable();
+			} catch (BaseException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}else if(e.getSource()==this.btncouadd){
+			int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择商家", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curShop=allShop.get(i);
+				shop=curShop;
+			}
+			FrmCouponAdd dlg=new FrmCouponAdd(this,"添加优惠券",true);
+			dlg.setVisible(true);
+		    this.reloadCouTable();
+		}else if(e.getSource()==this.btncoudelete){
+			int i=FrmMainManager_Shopkeeper.this.dataTableCou.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择优惠券", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+			    this.reloadCouTable();
+				curCoupon=allCoupon.get(i);
+			}
+			try {
+				TakeOutUtil.couponManager.deletecoup(this.curCoupon);
+			    this.reloadCouTable();
+			} catch (BaseException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}else if(e.getSource()==this.btnmanadd){
+			int i=FrmMainManager_Shopkeeper.this.dataTableShop.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择商家", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curShop=allShop.get(i);
+				shop=curShop;
+			}
+			FrmManAdd dlg=new FrmManAdd(this,"添加满减方案",true);
+			dlg.setVisible(true);
+		    this.reloadManTable();
+		}else if(e.getSource()==this.btnmandelete){
+			int i=FrmMainManager_Shopkeeper.this.dataTableMan.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择满减方案", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+			    this.reloadManTable();
+				curMan=allMan.get(i);
+			}
+			try {
+				TakeOutUtil.couponManager.deletepreferential(this.curMan);
+			    this.reloadManTable();
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;
