@@ -8,6 +8,7 @@ public class BeanProduct {
 		else if(col==2) return pro_name;
 		else if(col==3) return pro_price+"";
 		else if(col==4) return pro_discount+"";
+		else if(col==5) return count+"";
 		else return "";
 	}
 	private int pro_id;
@@ -16,6 +17,13 @@ public class BeanProduct {
 	private String pro_name;
 	private float pro_price;
 	private float pro_discount;
+	private int count=1;
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public int getPro_id() {
 		return pro_id;
 	}

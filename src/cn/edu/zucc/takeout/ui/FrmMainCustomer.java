@@ -261,7 +261,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 				curProduct=allProduct.get(i);
 				product=curProduct;
 			}
-			cartList.add(curProduct);
+				cartList.add(curProduct);
 		}else if(e.getSource()==this.btnshopdiscount){
 			int i=FrmMainCustomer.this.dataTableShop.getSelectedRow();
 			if(i<0) {

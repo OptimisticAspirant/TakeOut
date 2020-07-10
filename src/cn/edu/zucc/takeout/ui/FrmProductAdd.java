@@ -37,7 +37,6 @@ public class FrmProductAdd extends JDialog implements ActionListener{
 	
 	private JTextField edtID = new JTextField(15);
 	private JComboBox edtCateId=new JComboBox();
-
 	private JTextField edtCatename = new JTextField(15);
 	private JTextField edtPrice = new JTextField(15);
 	private JTextField edtSale = new JTextField(15);

@@ -3,6 +3,21 @@ package cn.edu.zucc.takeout.model;
 import java.util.Date;
 
 public class BeanProductorder {
+	public static final String[] tableTitles={"订单编号","商家编号","满减编号","优惠券编号","地址编号","骑手编号","原始价格","最终价格","下单时间","要求时间","订单状态"};
+	public String getCell(int col){
+		if(col==0) return order_id+"";
+		else if(col==1) return shop_id+"";
+		else if(col==2) return pre_id+"";
+		else if(col==3) return coup_id+"";
+		else if(col==4) return add_id+"";
+		else if(col==5) return rider_id+"";
+		else if(col==6) return originprice+"";
+		else if(col==7) return finalprice+"";
+		else if(col==8) return starttime+"";
+		else if(col==9) return requiretime+"";
+		else if(col==10) return orderstate+"";
+		else return "";
+	}
 	private int order_id;
 	private int pre_id;
 	private int add_id;
