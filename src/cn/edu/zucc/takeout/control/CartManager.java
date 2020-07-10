@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import cn.edu.zucc.takeout.itf.ICartManager;
 import cn.edu.zucc.takeout.model.BeanCustomer;
@@ -26,7 +27,7 @@ public class CartManager implements ICartManager{
 		Timestamp createTime = Timestamp.valueOf(time);
         try {
             conn=DBUtil.getConnection();
-            String sql="insert into productorder(shop_id,cust_id,coup_id,add_id,originprice,finalprice,starttime,requiretime) values(?,?,?,?,?,?,?,?)";
+            String sql="insert into productorder(shop_id,cust_id,coup_id,add_id,originprice,finalprice,starttime,requiretime,orderstate) values(?,?,?,?,?,?,?,?,?)";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql,java.sql.PreparedStatement.RETURN_GENERATED_KEYS);
             pst.setInt(1,shop.getShop_id());
             pst.setInt(2,cust.getCust_id());
@@ -36,6 +37,7 @@ public class CartManager implements ICartManager{
             pst.setFloat(6,finalprice);
             pst.setTimestamp(7,createTime);
             pst.setTimestamp(8,new java.sql.Timestamp(requiretime.getTime()));
+            pst.setString(9,"等待骑手接单");
             pst.executeUpdate();
             ResultSet rs=pst.getGeneratedKeys();
             while(rs.next()) {
@@ -114,7 +116,6 @@ public class CartManager implements ICartManager{
         }
 		return result;
 	}
-	
 	@Override
 	public float searchfinal(int orderid) throws BaseException{
 		Connection conn=null;
@@ -142,6 +143,36 @@ public class CartManager implements ICartManager{
             }
         }
 		return result;
+	}
+	
+	@Override
+	public void addToProduct(List<BeanProduct> cartList, int key) throws BaseException{
+		Connection conn=null;
+        try {
+            conn=DBUtil.getConnection();
+            for(int i=0;i<cartList.size();i++) {
+            	String sql="insert into orderdetail(order_id,pro_id,mount,price,perdiscount) values(?,?,?,?,?)";
+                java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+                pst.setInt(1,key);
+                pst.setInt(2,cartList.get(i).getPro_id());
+                pst.setInt(3,cartList.get(i).getCount());
+                pst.setFloat(4,cartList.get(i).getPro_price());
+                pst.setFloat(5,cartList.get(i).getPro_discount());
+                pst.executeUpdate();
+    			pst.close();
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(conn!=null) {
+                try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }
 	}
 	
 }

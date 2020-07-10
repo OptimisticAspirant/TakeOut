@@ -1,6 +1,18 @@
 package cn.edu.zucc.takeout.model;
 
-public class BeanOrderdetial {
+public class BeanOrderdetail {
+	public static final String[] tableTitles={"订单编号","商品编号","商品数量","商品价格","优惠后的单品价格"};
+	public String getCell(int col){
+		if(col==0) return order_id+"";
+		else if(col==1) return pro_id+"";
+		else if(col==2) return mount+"";
+		else if(col==3) return price+"";
+		else if(col==3) return perdiscount+"";
+		else return "";
+	}
+	public static String[] getTabletitles() {
+		return tableTitles;
+	}
 	private int pro_id;
 	private int order_id;
 	private int mount;

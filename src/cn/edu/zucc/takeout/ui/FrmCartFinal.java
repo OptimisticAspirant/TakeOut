@@ -3,6 +3,7 @@ package cn.edu.zucc.takeout.ui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,14 +18,24 @@ public class FrmCartFinal extends JFrame{
 	
 	private JPanel statusBar=new JPanel();
 	
+	private static final long serialVersionUID = 1L;
+	
 	public FrmCartFinal() throws BaseException {
 		
-		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setTitle("结算");
+		
+		this.setSize(230, 70);
+		
+		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		this.setLocation((int) (width - this.getWidth()) / 2,
+				(int) (height - this.getHeight()) / 2);
+
+		this.validate();
 		
 		statusBar.setLayout(new FlowLayout(FlowLayout.CENTER));
 	    JLabel label=null;
-		label = new JLabel("原始金额："+new CartManager().searchorigin(FrmCartSettle.key)+"\n"+"结算金额："+new CartManager().searchfinal(FrmCartSettle.key)+"\n");
+		label = new JLabel("原始金额："+new CartManager().searchorigin(FrmCartSettle.key)+"   "+"结算金额："+new CartManager().searchfinal(FrmCartSettle.key));
 	    statusBar.add(label);
 	    this.getContentPane().add(statusBar,BorderLayout.CENTER);
 	    

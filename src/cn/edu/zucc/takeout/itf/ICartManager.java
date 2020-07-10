@@ -1,6 +1,7 @@
 package cn.edu.zucc.takeout.itf;
 
 import java.util.Date;
+import java.util.List;
 
 import cn.edu.zucc.takeout.model.BeanCustomer;
 import cn.edu.zucc.takeout.model.BeanProduct;
@@ -17,5 +18,7 @@ public interface ICartManager {
 	public float searchorigin(int orderid) throws BaseException;
 
 	public float searchfinal(int orderid) throws BaseException;
+
+	public void addToProduct(List<BeanProduct> cartList, int key) throws BaseException;
 
 }

@@ -32,17 +32,18 @@ import cn.edu.zucc.takeout.util.BaseException;
 public class FrmCartSettle extends JDialog implements ActionListener{
 	
 	public static int key=0;
+	public static int keyToAddPro=0;
 	
 	private JPanel toolBar = new JPanel();
 	private JPanel workPane = new JPanel();
 	private Button btnOk = new Button("确定");
 	private Button btnCancel = new Button("取消");
-	private JLabel labelSelectCoupon = new JLabel("选择优惠券：");
+	private JLabel labelSelectCoupon = new JLabel("请选择优惠券：");
 	private JComboBox edtSelectCoupon=new JComboBox();
 	private JLabel labelSelectAddress = new JLabel("选择配送地址：");
 	private JComboBox edtSelectAddress=new JComboBox();
 	private JLabel labelSelectTime = new JLabel("输入送达时间(几分钟内)：");
-	private JTextField edtSelectTime = new JTextField(10);
+	private JTextField edtSelectTime = new JTextField(9);
 	
 	public FrmCartSettle(JFrame f, String s, boolean b) {
 		
@@ -81,7 +82,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 		workPane.add(labelSelectTime);
 		workPane.add(edtSelectTime);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
-		this.setSize(320, 200);
+		this.setSize(320, 180);
 		
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -101,16 +102,19 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 		else if(e.getSource()==this.btnOk){
 			
 			BeanShopkeeper shop=null;
-			shop=new FrmMainManager_Shopkeeper().shop;
+			shop=new FrmMainCustomer_Cart().cartshop;
 			
 			int selectedCouponId=this.edtSelectCoupon.getSelectedIndex();
+			int coupid=-1;
 			List<BeanCouponhold> coupList=null;
 			try {
 				coupList=new CouponManager().loadCouponhold(BeanCustomer.currentLoginUser);
 			} catch (BaseException e3) {
 				e3.printStackTrace();
 			}
-			int coupid=coupList.get(selectedCouponId).getCoup_id();
+			if(selectedCouponId>0) {
+				coupid=coupList.get(selectedCouponId-1).getCoup_id();
+			}
 			
 			int selectedAddressId=this.edtSelectAddress.getSelectedIndex();
 			List<BeanAddress> addList=null;
@@ -119,7 +123,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 			} catch (BaseException e2) {
 				e2.printStackTrace();
 			};
-			int addressid=addList.get(selectedAddressId).getAdd_id();
+			int addressid=addList.get(selectedAddressId-1).getAdd_id();
 			
 			int minute=Integer.parseInt(this.edtSelectTime.getText());
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -142,10 +146,13 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 			}
 			
 			try {
-				key=TakeOutUtil.CartManager.settle(shop, BeanCustomer.currentLoginUser, coupid, addressid, originprice, finalprice, requiretime);;
+				key=TakeOutUtil.CartManager.settle(shop, BeanCustomer.currentLoginUser, coupid, addressid, originprice, finalprice, requiretime);
+				
+				TakeOutUtil.CartManager.addToProduct(FrmMainCustomer.cartList,key);
+				
 				FrmCartFinal dlg=new FrmCartFinal();
-				dlg.setVisible(true);
 				this.setVisible(false);
+				dlg.setVisible(true);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;

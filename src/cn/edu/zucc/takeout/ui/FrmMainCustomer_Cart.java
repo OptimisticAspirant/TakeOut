@@ -25,7 +25,7 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
 	
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private JMenuBar menubar=new JMenuBar();
 	
@@ -49,6 +49,8 @@ private static final long serialVersionUID = 1L;
 	List<BeanShopkeeper> allShop=null;
 	private BeanProduct curCart=null;
 	List<BeanProduct> allCarts=null;
+	
+	public static BeanShopkeeper cartshop=null;
 	
 	private void reloadShopTable(){
 		try {
@@ -169,6 +171,7 @@ private static final long serialVersionUID = 1L;
 				return;
 			}else {
 				curShop=allShop.get(i);
+				cartshop=curShop;
 			}
 			FrmCartSettle dlg=new FrmCartSettle(this, "Ω·À„", true);
 			dlg.setVisible(true);

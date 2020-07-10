@@ -25,8 +25,10 @@ import javax.swing.table.DefaultTableModel;
 import cn.edu.zucc.takeout.TakeOutUtil;
 import cn.edu.zucc.takeout.control.CustomerManager;
 import cn.edu.zucc.takeout.model.BeanCustomer;
+import cn.edu.zucc.takeout.model.BeanOrderdetail;
 import cn.edu.zucc.takeout.model.BeanProduct;
 import cn.edu.zucc.takeout.model.BeanProductcategory;
+import cn.edu.zucc.takeout.model.BeanProductorder;
 import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
 
@@ -63,8 +65,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	private Object tblProData[][];
 	DefaultTableModel tabProModel=new DefaultTableModel();
 	private JTable dataTablePro=new JTable(tabProModel);
-	
-	
+
 	private BeanShopkeeper curShop=null;
 	List<BeanShopkeeper> allShop=null;
 	private BeanProductcategory curCate=null;
@@ -272,6 +273,9 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 				shop=curShop;
 			}
 			FrmMainCustomer_ShopDiscount dlg=new FrmMainCustomer_ShopDiscount();
+			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnorders){
+			FrmMainCustomer_Orders dlg=new FrmMainCustomer_Orders();
 			dlg.setVisible(true);
 		}
 	}
