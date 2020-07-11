@@ -19,6 +19,6 @@ public interface ICartManager {
 
 	public float searchfinal(int orderid) throws BaseException;
 
-	public void addToProduct(List<BeanProduct> cartList, int key) throws BaseException;
+	public void addToOrderdetails(List<BeanProduct> cartList, int key) throws BaseException;
 
 }

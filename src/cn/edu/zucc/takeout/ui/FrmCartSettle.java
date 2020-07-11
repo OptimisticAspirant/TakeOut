@@ -132,7 +132,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 			
 			float originprice=0;
 			for(int i=0;i<FrmMainCustomer.cartList.size();i++) {
-				originprice=originprice+FrmMainCustomer.cartList.get(i).getPro_price();
+				originprice=originprice+FrmMainCustomer.cartList.get(i).getPro_price()*FrmMainCustomer.cartList.get(i).getCount();
 			}
 					
 			float finalprice=0;
@@ -148,7 +148,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 			try {
 				key=TakeOutUtil.CartManager.settle(shop, BeanCustomer.currentLoginUser, coupid, addressid, originprice, finalprice, requiretime);
 				
-				TakeOutUtil.CartManager.addToProduct(FrmMainCustomer.cartList,key);
+				TakeOutUtil.CartManager.addToOrderdetails(FrmMainCustomer.cartList,key);
 				
 				FrmCartFinal dlg=new FrmCartFinal();
 				this.setVisible(false);

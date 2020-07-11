@@ -82,6 +82,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 			try {
 				BeanManager.currentLoginUser= TakeOutUtil.managerManager.login(userid, pwd);
 				FrmMainManager dlg=new FrmMainManager();
+				dlg.setVisible(true);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
@@ -93,6 +94,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 			try {
 				BeanCustomer.currentLoginUser= TakeOutUtil.customerManager.login(userid, pwd);
 				FrmMainCustomer dlg=new FrmMainCustomer();
+				dlg.setVisible(true);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;

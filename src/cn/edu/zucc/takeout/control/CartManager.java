@@ -44,6 +44,11 @@ public class CartManager implements ICartManager{
             	keyID=rs.getInt(1);
             }
 			pst.close();
+			sql="update riderbill set evaluate=? where order_id=?";
+            pst=conn.prepareStatement(sql);
+            pst.setString(1,"Î´ÆÀ¼Û");
+            pst.setInt(2,keyID);
+            pst.executeUpdate();
         }catch(SQLException e) {
             e.printStackTrace();
         }finally {
@@ -116,6 +121,7 @@ public class CartManager implements ICartManager{
         }
 		return result;
 	}
+	
 	@Override
 	public float searchfinal(int orderid) throws BaseException{
 		Connection conn=null;
@@ -146,7 +152,7 @@ public class CartManager implements ICartManager{
 	}
 	
 	@Override
-	public void addToProduct(List<BeanProduct> cartList, int key) throws BaseException{
+	public void addToOrderdetails(List<BeanProduct> cartList, int key) throws BaseException{
 		Connection conn=null;
         try {
             conn=DBUtil.getConnection();
@@ -158,6 +164,14 @@ public class CartManager implements ICartManager{
                 pst.setInt(3,cartList.get(i).getCount());
                 pst.setFloat(4,cartList.get(i).getPro_price());
                 pst.setFloat(5,cartList.get(i).getPro_discount());
+                pst.executeUpdate();
+    			pst.close();
+            }
+            for(int j=0;j<cartList.size();j++) {
+            	String sql="update shopkeeper set total_sale=total_sale+? where shop_id=?";
+                java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+                pst.setInt(1,cartList.get(j).getCount());
+                pst.setInt(2,cartList.get(j).getShop_id());
                 pst.executeUpdate();
     			pst.close();
             }

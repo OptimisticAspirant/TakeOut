@@ -35,37 +35,11 @@ public class FrmMainCustomer_Selfinfo extends JDialog implements ActionListener{
 	private JLabel labelPhone = new JLabel("常用手机：");
 	private JLabel labelMail = new JLabel("常用邮箱：");
 	private JLabel labelCity = new JLabel("所在城市：");
-	private JTextField edtUserName = new JTextField(20);
-	private JTextField edtUserGender = new JTextField(20);
-	private JTextField edtUserPhone = new JTextField(20);
-	private JTextField edtUserMail = new JTextField(20);
-	private JTextField edtUserCity = new JTextField(20);
-	public FrmMainCustomer_Selfinfo(Dialog f, String s, boolean b) {
-		super(f, s, b);
-		toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		toolBar.add(this.btnOk);
-		toolBar.add(btnCancel);
-		this.getContentPane().add(toolBar, BorderLayout.SOUTH);
-		workPane.add(labelName);
-		workPane.add(edtUserName);
-		workPane.add(labelGender);
-		workPane.add(edtUserGender);
-		workPane.add(labelPhone);
-		workPane.add(edtUserPhone);
-		workPane.add(labelMail);
-		workPane.add(edtUserMail);
-		workPane.add(labelCity);
-		workPane.add(edtUserCity);
-		this.getContentPane().add(workPane, BorderLayout.CENTER);
-		this.setSize(300, 220);
-		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-		this.setLocation((int) (width - this.getWidth()) / 2,
-				(int) (height - this.getHeight()) / 2);
-		this.validate();
-		this.btnCancel.addActionListener(this);
-		this.btnOk.addActionListener(this);
-	}
+	private JTextField edtUserName = new JTextField(BeanCustomer.currentLoginUser.getCust_name(),20);
+	private JTextField edtUserGender = new JTextField(BeanCustomer.currentLoginUser.getCust_gender(),20);
+	private JTextField edtUserPhone = new JTextField(BeanCustomer.currentLoginUser.getCust_phone(),20);
+	private JTextField edtUserMail = new JTextField(BeanCustomer.currentLoginUser.getCust_mail(),20);
+	private JTextField edtUserCity = new JTextField(BeanCustomer.currentLoginUser.getCust_city(),20);
 	public FrmMainCustomer_Selfinfo(Frame f, String s, boolean b) {
 		super(f, s, b);
 		toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));

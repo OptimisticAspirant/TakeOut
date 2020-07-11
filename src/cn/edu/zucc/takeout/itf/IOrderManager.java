@@ -9,8 +9,14 @@ import cn.edu.zucc.takeout.util.BaseException;
 
 public interface IOrderManager {
 
-	public List<BeanProductorder> loadOrders(BeanCustomer currentLoginUser) throws BaseException;
+	public List<BeanProductorder> loadOrders(BeanCustomer customer) throws BaseException;
 
 	public List<BeanOrderdetail> loadDetails(BeanProductorder productorder) throws BaseException;
+
+	public void evaluateRider(BeanProductorder order, String evaluate) throws BaseException;
+
+	public void evaluateProduct(BeanOrderdetail product, String content, float start) throws BaseException;
+
+	public void deleteorders(BeanProductorder order) throws BaseException;
 
 }

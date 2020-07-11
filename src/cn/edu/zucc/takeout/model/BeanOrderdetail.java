@@ -7,7 +7,7 @@ public class BeanOrderdetail {
 		else if(col==1) return pro_id+"";
 		else if(col==2) return mount+"";
 		else if(col==3) return price+"";
-		else if(col==3) return perdiscount+"";
+		else if(col==4) return perdiscount+"";
 		else return "";
 	}
 	public static String[] getTabletitles() {

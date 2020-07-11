@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
 import cn.edu.zucc.takeout.model.BeanRider;
+import cn.edu.zucc.takeout.model.BeanRiderbill;
 import cn.edu.zucc.takeout.util.BaseException;
 
 public class FrmMainManager_Rider extends JFrame implements ActionListener{
@@ -39,10 +40,18 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 	private Object tblRiderData[][];
 	DefaultTableModel tabRiderModel=new DefaultTableModel();
 	private JTable dataTableRider=new JTable(tabRiderModel);
+	
+	private Object tblRiderbillTitle[]=BeanRiderbill.tableTitles;
+	private Object tblRiderbillData[][];
+	DefaultTableModel tabRiderbillModel=new DefaultTableModel();
+	private JTable dataTableRiderbill=new JTable(tabRiderbillModel);
 
 	private BeanRider curRider=null;
 	List<BeanRider> allRider=null;
 	public static BeanRider rider=null;
+	private BeanRiderbill curRiderbill=null;
+	List<BeanRiderbill> allRiderbills=null;
+	public static BeanRiderbill riderbill=null;
 	
 	private void reloadRiderTable(){
 		try {
@@ -59,6 +68,42 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 		tabRiderModel.setDataVector(tblRiderData,tblRiderTitle);
 		this.dataTableRider.validate();
 		this.dataTableRider.repaint();
+	}
+	
+	private void reloadBillTable(){
+		try {
+			allRiderbills=TakeOutUtil.riderbillManager.loadriderbill(curRider);
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		tblRiderbillData =  new Object[allRiderbills.size()][BeanRiderbill.tableTitles.length];
+		for(int i=0;i<allRiderbills.size();i++){
+			for(int j=0;j<BeanRiderbill.tableTitles.length;j++)
+				tblRiderbillData[i][j]=allRiderbills.get(i).getCell(j);
+		}
+		tabRiderbillModel.setDataVector(tblRiderbillData,tblRiderbillTitle);
+		this.dataTableRiderbill.validate();
+		this.dataTableRiderbill.repaint();
+	}
+	
+	private void reloadRiderbillTabel(int riderIdx){
+		if(riderIdx<0) return;
+		curRider=allRider.get(riderIdx);
+		try {
+			allRiderbills=TakeOutUtil.riderbillManager.loadriderbill(curRider);
+		} catch (BaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		tblRiderbillData =  new Object[allRiderbills.size()][BeanRiderbill.tableTitles.length];
+		for(int i=0;i<allRiderbills.size();i++){
+			for(int j=0;j<BeanRiderbill.tableTitles.length;j++)
+				tblRiderbillData[i][j]=allRiderbills.get(i).getCell(j);
+		}
+		tabRiderbillModel.setDataVector(tblRiderbillData,tblRiderbillTitle);
+		this.dataTableRiderbill.validate();
+		this.dataTableRiderbill.repaint();
 	}
     
     public FrmMainManager_Rider() {
@@ -88,10 +133,25 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 				if(i<0) {
 					return;
 				}
+				FrmMainManager_Rider.this.reloadRiderbillTabel(i);
 			}
 	    	
 	    });
 	    this.reloadRiderTable();
+	    
+	    this.getContentPane().add(new JScrollPane(this.dataTableRiderbill), BorderLayout.CENTER);
+	    this.dataTableRiderbill.addMouseListener(new MouseAdapter (){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int i=FrmMainManager_Rider.this.dataTableRiderbill.getSelectedRow();
+				if(i<0) {
+					return;
+				}
+			}
+	    	
+	    });
+	    this.reloadBillTable();
 	}
 
 	@Override
@@ -128,6 +188,18 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 			FrmRiderModify dlg=new FrmRiderModify(this,"±à¼­ÆïÊÖ",true);
 			dlg.setVisible(true);
 			this.reloadRiderTable();
+		}else if(e.getSource()==this.btnorder){
+//			int i=FrmMainManager_Rider.this.dataTableRider.getSelectedRow();
+//			if(i<0) {
+//				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÆïÊÖ", "´íÎó",JOptionPane.ERROR_MESSAGE);
+//				return;
+//			}else {
+//				curRider=allRider.get(i);
+//				rider=curRider;
+//			}
+//			FrmRiderTakeOrder dlg=new FrmRiderTakeOrder();
+//			dlg.setVisible(true);
+//			this.reloadRiderTable();
 		}
 	}
 

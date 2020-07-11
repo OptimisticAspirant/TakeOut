@@ -32,6 +32,7 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 
     private JButton btnEvaluateProduct=new JButton("评价商品");
     private JButton btnEvaluateRider=new JButton("评价骑手");
+    private JButton btndelete=new JButton("删除订单");
     
 	private Object tblOrdTitle[]=BeanProductorder.tableTitles;
 	private Object tblOrdData[][];
@@ -47,6 +48,9 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 	List<BeanProductorder> allOrder=null;
 	private BeanOrderdetail curDetail=null;
 	List<BeanOrderdetail> allDetail=null;
+	
+	public static BeanProductorder order=null;
+	public static BeanOrderdetail detail=null;
 	
 	private void reloadOrdTable(){
 		try {
@@ -72,14 +76,14 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblOrdData = new Object[allOrder.size()][BeanProductorder.tableTitles.length];
-		for(int i=0;i<allOrder.size();i++){
-			for(int j=0;j<BeanProductorder.tableTitles.length;j++)
-				tblOrdData[i][j]=allOrder.get(i).getCell(j);
+		tblDetailData = new Object[allDetail.size()][BeanOrderdetail.tableTitles.length];
+		for(int i=0;i<allDetail.size();i++){
+			for(int j=0;j<BeanOrderdetail.tableTitles.length;j++)
+				tblDetailData[i][j]=allDetail.get(i).getCell(j);
 		}
-		tabOrdModel.setDataVector(tblOrdData,tblOrdTitle);
-		this.dataTableOrd.validate();
-		this.dataTableOrd.repaint();
+		tabDetailModel.setDataVector(tblDetailData,tblDetailTitle);
+		this.dataTableDetail.validate();
+		this.dataTableDetail.repaint();
 	}
 	
 	private void reloadOrdDetialTable(int orderIdx){
@@ -91,14 +95,14 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		tblOrdData = new Object[allOrder.size()][BeanProductorder.tableTitles.length];
-		for(int i=0;i<allOrder.size();i++){
-			for(int j=0;j<BeanProductorder.tableTitles.length;j++)
-				tblOrdData[i][j]=allOrder.get(i).getCell(j);
+		tblDetailData = new Object[allDetail.size()][BeanOrderdetail.tableTitles.length];
+		for(int i=0;i<allDetail.size();i++){
+			for(int j=0;j<BeanOrderdetail.tableTitles.length;j++)
+				tblDetailData[i][j]=allDetail.get(i).getCell(j);
 		}
-		tabOrdModel.setDataVector(tblOrdData,tblOrdTitle);
-		this.dataTableOrd.validate();
-		this.dataTableOrd.repaint();
+		tabDetailModel.setDataVector(tblDetailData,tblDetailTitle);
+		this.dataTableDetail.validate();
+		this.dataTableDetail.repaint();
 	}
 	
 	
@@ -111,14 +115,16 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
     
 	    this.btnEvaluateRider.addActionListener(this);
 	    this.btnEvaluateProduct.addActionListener(this);
+	    this.btndelete.addActionListener(this);
 	    
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
 	    toolBar.add(btnEvaluateRider);
 	    toolBar.add(btnEvaluateProduct);
+	    toolBar.add(btndelete);
 	    this.setJMenuBar(menubar);
 	    
-	    this.getContentPane().add(new JScrollPane(this.dataTableOrd), BorderLayout.WEST);
+	    this.getContentPane().add(new JScrollPane(this.dataTableOrd), BorderLayout.CENTER);
 	    this.dataTableOrd.addMouseListener(new MouseAdapter (){
 
 			@Override
@@ -133,7 +139,7 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 	    	
 	    });
 	    
-	    this.getContentPane().add(new JScrollPane(this.dataTableDetail), BorderLayout.CENTER);
+	    this.getContentPane().add(new JScrollPane(this.dataTableDetail), BorderLayout.EAST);
 	    this.dataTableDetail.addMouseListener(new MouseAdapter (){
 
 			@Override
@@ -157,12 +163,10 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "请选择订单", "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
-//				if(FrmMainCustomer.cartList.get(i).getCount()>1) {
-//					FrmMainCustomer.cartList.get(i).setCount(FrmMainCustomer.cartList.get(i).getCount()-1);
-//				}else {
-//					FrmMainCustomer.cartList.remove(allCarts.get(i));
-//				}
-//				reloadCartOnlyTable();
+				curOrder=allOrder.get(i);
+				order=curOrder;
+				FrmMainCustomer_RiderEvaluate dlg=new FrmMainCustomer_RiderEvaluate(this, "评价骑手", true);
+				dlg.setVisible(true);
 			}
 		}else if(e.getSource()==this.btnEvaluateProduct){
 			int i=FrmMainCustomer_Orders.this.dataTableDetail.getSelectedRow();
@@ -170,11 +174,26 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "请选择商品", "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}else {
-//				curShop=allShop.get(i);
-//				cartshop=curShop;
+				curDetail=allDetail.get(i);
+				detail=curDetail;
 			}
-//			FrmCartSettle dlg=new FrmCartSettle(this, "结算", true);
-//			dlg.setVisible(true);
+			FrmMainCustomer_ProductEvaluate dlg=new FrmMainCustomer_ProductEvaluate(this, "评价商品", true);
+			dlg.setVisible(true);
+		}else if(e.getSource()==this.btndelete){
+			int i=FrmMainCustomer_Orders.this.dataTableOrd.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择订单", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curOrder=allOrder.get(i);
+			}
+			try {
+				TakeOutUtil.orderManager.deleteorders(curOrder);
+				reloadOrdTable();
+				reloadDetialTable();
+			} catch (BaseException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
