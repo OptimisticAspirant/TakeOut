@@ -8,12 +8,13 @@ import cn.edu.zucc.takeout.control.CustomerManager;
 import cn.edu.zucc.takeout.control.ManagerManager;
 import cn.edu.zucc.takeout.control.OrderManager;
 import cn.edu.zucc.takeout.control.ProductManager;
+import cn.edu.zucc.takeout.control.RecommendManager;
 import cn.edu.zucc.takeout.control.RiderManager;
 import cn.edu.zucc.takeout.control.ShopkeeperManager;
 import cn.edu.zucc.takeout.control.VIPManager;
 import cn.edu.zucc.takeout.control.CartManager;
 import cn.edu.zucc.takeout.control.RiderbillManager;
-
+import cn.edu.zucc.takeout.control.SearchManager;
 import cn.edu.zucc.takeout.itf.IAddressManager;
 import cn.edu.zucc.takeout.itf.ICartManager;
 import cn.edu.zucc.takeout.itf.ICategoryManager;
@@ -22,10 +23,12 @@ import cn.edu.zucc.takeout.itf.ICustomerManager;
 import cn.edu.zucc.takeout.itf.IManagerManager;
 import cn.edu.zucc.takeout.itf.IOrderManager;
 import cn.edu.zucc.takeout.itf.IProductManager;
+import cn.edu.zucc.takeout.itf.IRecommendManager;
 import cn.edu.zucc.takeout.itf.IRiderManager;
 import cn.edu.zucc.takeout.itf.IShopkeeperManager;
 import cn.edu.zucc.takeout.itf.IVIPManager;
-import cn.edu.zucc.takeout.itf.IRiderbillManager;;
+import cn.edu.zucc.takeout.itf.IRiderbillManager;
+import cn.edu.zucc.takeout.itf.ISearchManager;;
 
 public class TakeOutUtil {
 	
@@ -40,6 +43,8 @@ public class TakeOutUtil {
 	public static IVIPManager VIPManager=new VIPManager();
 	public static ICartManager CartManager=new CartManager();
 	public static IOrderManager orderManager=new OrderManager();
-	public static IRiderbillManager riderbillManager=new RiderbillManager(); 
+	public static IRiderbillManager riderbillManager=new RiderbillManager();
+	public static IRecommendManager recommendManager=new RecommendManager();
+	public static ISearchManager searchManager=new SearchManager(); 
 	
 }

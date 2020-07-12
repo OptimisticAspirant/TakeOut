@@ -137,7 +137,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 					
 			float finalprice=0;
 			for(int i=0;i<FrmMainCustomer.cartList.size();i++) {
-				finalprice=finalprice+FrmMainCustomer.cartList.get(i).getPro_discount();
+				finalprice=finalprice+FrmMainCustomer.cartList.get(i).getPro_discount()*FrmMainCustomer.cartList.get(i).getCount();
 			}
 			try {
 				finalprice=finalprice-(new CartManager().settle(coupid));

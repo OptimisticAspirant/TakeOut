@@ -76,7 +76,7 @@ public class CouponManager implements ICouponManager{
 			if(rs.next()) throw new BusinessException("该优惠券属于某个用户并且暂未使用，不能删除!");
 			rs.close();
 			pst.close();
-			sql="delete from coup where coup_id=?";
+			sql="delete from coupon where coup_id=?";
 			pst=conn.prepareStatement(sql);
 			pst.setInt(1, coup.getCoup_id());
 			pst.executeUpdate();

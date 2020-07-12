@@ -69,6 +69,7 @@ public class FrmAddressAdd extends JDialog implements ActionListener{
 				(int) (height - this.getHeight()) / 2);
 
 		this.validate();
+		
 		this.btnOk.addActionListener(this);
 		this.btnCancel.addActionListener(this);
 		

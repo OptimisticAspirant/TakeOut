@@ -9,6 +9,7 @@ public class BeanProduct {
 		else if(col==3) return pro_price+"";
 		else if(col==4) return pro_discount+"";
 		else if(col==5) return count+"";
+		else if(col==6) return shop_id+"";
 		else return "";
 	}
 	private int pro_id;

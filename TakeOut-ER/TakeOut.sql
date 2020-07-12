@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/7/8 16:24:43                            */
+/* Created on:     2020/7/11 21:40:32                           */
 /*==============================================================*/
 
 
@@ -39,7 +39,7 @@ drop table if exists shopkeeper;
 /*==============================================================*/
 create table address
 (
-   add_id               int not null,
+   add_id               int not null AUTO_INCREMENT,
    cust_id              int,
    province             varchar(20) not null,
    city                 varchar(20) not null,
@@ -55,7 +55,7 @@ create table address
 /*==============================================================*/
 create table coupon
 (
-   coup_id              int not null,
+   coup_id              int not null AUTO_INCREMENT,
    shop_id              int,
    coup_amount          float not null,
    coup_count           int not null,
@@ -83,7 +83,7 @@ create table couponhold
 /*==============================================================*/
 create table customer
 (
-   cust_id              int not null,
+   cust_id              int not null AUTO_INCREMENT,
    cust_name            varchar(20) not null,
    cust_gender          varchar(5) not null,
    cust_password        varchar(30) not null,
@@ -138,7 +138,7 @@ create table orderdetail
 /*==============================================================*/
 create table preferential
 (
-   pre_id               int not null,
+   pre_id               int not null AUTO_INCREMENT,
    shop_id              int,
    pre_require          float not null,
    pre_cut              float not null,
@@ -165,7 +165,7 @@ create table product
 /*==============================================================*/
 create table productcategory
 (
-   cate_id              int not null,
+   cate_id              int not null AUTO_INCREMENT,
    columnname           varchar(20) not null,
    pro_count            int not null,
    primary key (cate_id)
@@ -182,7 +182,7 @@ create table productevaluate
    content              varchar(50),
    eval_date            datetime,
    star                 float,
-   photo                longblob,
+   photo                varchar(20),
    primary key (shop_id, pro_id, cust_id)
 );
 
@@ -191,7 +191,7 @@ create table productevaluate
 /*==============================================================*/
 create table productorder
 (
-   order_id             int not null,
+   order_id             int not null AUTO_INCREMENT,
    pre_id               int,
    add_id               int,
    cust_id              int,
@@ -211,7 +211,7 @@ create table productorder
 /*==============================================================*/
 create table rider
 (
-   rider_id             int not null,
+   rider_id             int not null AUTO_INCREMENT,
    rider_name           varchar(20) not null,
    entrydate            datetime not null,
    identity             varchar(20) not null,
@@ -236,7 +236,7 @@ create table riderbill
 /*==============================================================*/
 create table shopkeeper
 (
-   shop_id              int not null,
+   shop_id              int not null AUTO_INCREMENT,
    shop_name            varchar(20) not null,
    shop_star            float,
    per_consume          float,

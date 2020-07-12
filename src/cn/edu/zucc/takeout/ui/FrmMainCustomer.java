@@ -47,6 +47,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
     private JButton btnmodifyPwd=new JButton("密码修改");
     private JButton btnregister=new JButton("会员注册");
     private JButton btnshopdiscount=new JButton("查看商家优惠信息");
+    private JButton btnrecommend=new JButton("查看推荐菜单");
 	private JButton btnaddcart=new JButton("加入购物车");
 
 	private JPanel statusBar = new JPanel();
@@ -164,6 +165,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	    this.btncart.addActionListener(this);
 	    this.btnshopdiscount.addActionListener(this);
 	    this.btnaddcart.addActionListener(this);
+	    this.btnrecommend.addActionListener(this);
 	    
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
@@ -174,6 +176,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	    toolBar.add(btnmodifyPwd);
 	    toolBar.add(btnregister);
 	    toolBar.add(btnshopdiscount);
+	    toolBar.add(btnrecommend);
 	    toolBar.add(btnaddcart);
 	    toolBar.add(btncart);
 	    this.setJMenuBar(menubar);
@@ -211,7 +214,6 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 				if(i<0) {
 					return;
 				}
-				curShop=allShop.get(i);
 				FrmMainCustomer.this.reloadShopProTabel(i);
 			}
 	    	
@@ -262,7 +264,20 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 				curProduct=allProduct.get(i);
 				product=curProduct;
 			}
+			int flag=0;
+			for(int k=0;k<cartList.size();k++) {
+				if(cartList.get(k).getPro_id()==curProduct.getPro_id()) {
+					flag=1;
+					BeanProduct temp=cartList.get(k);
+					temp.setCount(temp.getCount()+1);
+					cartList.remove(k);
+					cartList.add(temp);
+				}
+			}
+			if(flag==0) {
 				cartList.add(curProduct);
+			}
+				
 		}else if(e.getSource()==this.btnshopdiscount){
 			int i=FrmMainCustomer.this.dataTableShop.getSelectedRow();
 			if(i<0) {
@@ -276,6 +291,9 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 			dlg.setVisible(true);
 		}else if(e.getSource()==this.btnorders){
 			FrmMainCustomer_Orders dlg=new FrmMainCustomer_Orders();
+			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnrecommend){
+			FrmMainCustomer_RecommendOrders dlg=new FrmMainCustomer_RecommendOrders();
 			dlg.setVisible(true);
 		}
 	}

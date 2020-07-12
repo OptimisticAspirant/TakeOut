@@ -29,6 +29,7 @@ public class FrmMainManager extends JFrame implements ActionListener {
     private JButton btnpro=new JButton("商品分类");
     private JButton btnmodifyPwd=new JButton("密码修改");
     private JButton btnregister=new JButton("账户注册");
+    private JButton btnsearch=new JButton("全局搜索");
 
 	private JPanel statusBar = new JPanel();
 
@@ -43,6 +44,7 @@ public class FrmMainManager extends JFrame implements ActionListener {
 	    this.btnshop.addActionListener(this);
 	    this.btnpro.addActionListener(this);
 	    this.btnuser.addActionListener(this);
+	    this.btnsearch.addActionListener(this);
 	    
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
@@ -52,6 +54,7 @@ public class FrmMainManager extends JFrame implements ActionListener {
 	    toolBar.add(btnpro);
 	    toolBar.add(btnmodifyPwd);
 	    toolBar.add(btnregister);
+	    toolBar.add(btnsearch);
 	    this.setJMenuBar(menubar);
 	    
 	    //状态栏
@@ -86,6 +89,9 @@ public class FrmMainManager extends JFrame implements ActionListener {
 			dlg.setVisible(true);
 		}else if(e.getSource()==this.btnuser){
 			FrmMainManager_User dlg=new FrmMainManager_User();
+			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnsearch){
+			FrmMainManager_Search dlg=new FrmMainManager_Search();
 			dlg.setVisible(true);
 		}
 	}

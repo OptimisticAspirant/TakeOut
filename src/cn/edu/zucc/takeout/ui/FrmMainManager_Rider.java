@@ -151,7 +151,6 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 			}
 	    	
 	    });
-	    this.reloadBillTable();
 	}
 
 	@Override
@@ -189,17 +188,17 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 			dlg.setVisible(true);
 			this.reloadRiderTable();
 		}else if(e.getSource()==this.btnorder){
-//			int i=FrmMainManager_Rider.this.dataTableRider.getSelectedRow();
-//			if(i<0) {
-//				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÆïÊÖ", "´íÎó",JOptionPane.ERROR_MESSAGE);
-//				return;
-//			}else {
-//				curRider=allRider.get(i);
-//				rider=curRider;
-//			}
-//			FrmRiderTakeOrder dlg=new FrmRiderTakeOrder();
-//			dlg.setVisible(true);
-//			this.reloadRiderTable();
+			int i=FrmMainManager_Rider.this.dataTableRider.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñÆïÊÖ", "´íÎó",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curRider=allRider.get(i);
+				rider=curRider;
+			}
+			FrmRiderTakeOrder dlg=new FrmRiderTakeOrder();
+			dlg.setVisible(true);
+			this.reloadRiderTable();
 		}
 	}
 
