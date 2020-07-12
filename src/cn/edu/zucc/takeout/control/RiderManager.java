@@ -139,4 +139,62 @@ public class RiderManager implements IRiderManager{
 		}
 		return result;
 	}
+
+	public int riderSumCount(BeanRider rider) {
+		int count=0;
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select count(*) from riderbill group by rider_id";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.execute();
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				count=rs.getInt(1);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return count;
+	}
+
+	public float riderSumIncome(BeanRider rider) {
+		float money=0;
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select sum(income) from riderbill group by rider_id";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.execute();
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				money=rs.getInt(1);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return money;
+	}
 }

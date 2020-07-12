@@ -308,7 +308,7 @@ public class CustomerManager implements ICustomerManager{
 				}
 				return "您的会员有效期截至"+deadline+" !";
 			}else {
-				return "您还不是会员！ 您可点击菜单栏“会员注册”按钮进行会员申请！下次登录时可查看会员截止日期！";
+				return "您还不是会员！ 您可点击菜单栏“会员注册”按钮进行会员申请！";
 			}
 			
 		} catch (SQLException e) {

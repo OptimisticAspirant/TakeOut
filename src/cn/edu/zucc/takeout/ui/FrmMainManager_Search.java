@@ -3,6 +3,7 @@ package cn.edu.zucc.takeout.ui;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
-import cn.edu.zucc.takeout.model.BeanCoupon;
 import cn.edu.zucc.takeout.model.BeanCustomer;
 import cn.edu.zucc.takeout.model.BeanProduct;
 import cn.edu.zucc.takeout.model.BeanRiderbill;
@@ -65,8 +65,8 @@ public class FrmMainManager_Search extends JFrame implements ActionListener{
 	public FrmMainManager_Search(){
 
 		this.setTitle("È«¾ÖËÑË÷");
+		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		
-		this.setSize(720, 360);
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.setLocation((int) (width - this.getWidth()) / 2,
@@ -80,12 +80,15 @@ public class FrmMainManager_Search extends JFrame implements ActionListener{
 	    
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
+	    toolBar.add(edttext);
 	    toolBar.add(btnsearchCustomer);
 	    toolBar.add(btnsearchRider);
 	    toolBar.add(btnsearchProduct);
 	    this.setJMenuBar(menubar);
 	    
-	    this.getContentPane().add(new JScrollPane(this.dataTablePro), BorderLayout.CENTER);
+	    this.getContentPane().add(new JScrollPane(this.dataTableCust), BorderLayout.WEST);
+	    this.getContentPane().add(new JScrollPane(this.dataTableRider), BorderLayout.CENTER);
+	    this.getContentPane().add(new JScrollPane(this.dataTablePro), BorderLayout.EAST);
 		
 	}
 	

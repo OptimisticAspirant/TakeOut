@@ -87,7 +87,13 @@ public class FrmManagerRegister extends JDialog implements ActionListener{
 		if(e.getSource()==this.btnCancel)
 			this.setVisible(false);
 		else if(e.getSource()==this.btnOk){
-			int userid=Integer.parseInt(this.edtUserId.getText());
+			int userid=0;
+			try {
+				userid=Integer.parseInt(this.edtUserId.getText());
+			}catch (NumberFormatException e2) {
+				JOptionPane.showMessageDialog(null, "请在用户编号输入数字！", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			String username=this.edtUserName.getText();
 			String pwd1=new String(this.edtPwd.getPassword());
 			String pwd2=new String(this.edtPwd2.getPassword());

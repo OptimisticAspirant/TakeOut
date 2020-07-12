@@ -28,6 +28,7 @@ import cn.edu.zucc.takeout.model.BeanCouponhold;
 import cn.edu.zucc.takeout.model.BeanCustomer;
 import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
+import cn.edu.zucc.takeout.util.BusinessException;
 
 public class FrmCartSettle extends JDialog implements ActionListener{
 	
@@ -123,6 +124,9 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 			} catch (BaseException e2) {
 				e2.printStackTrace();
 			};
+			if(selectedAddressId-1<0) {
+				JOptionPane.showMessageDialog(null, "ÇëÑ¡ÔñµØÖ·£¡", "´íÎó",JOptionPane.ERROR_MESSAGE);
+			}
 			int addressid=addList.get(selectedAddressId-1).getAdd_id();
 			
 			int minute=Integer.parseInt(this.edtSelectTime.getText());
@@ -149,6 +153,10 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 				key=TakeOutUtil.CartManager.settle(shop, BeanCustomer.currentLoginUser, coupid, addressid, originprice, finalprice, requiretime);
 				
 				TakeOutUtil.CartManager.addToOrderdetails(FrmMainCustomer.cartList,key);
+
+				FrmMainCustomer.cartList.clear();
+				FrmMainCustomer.frmMainCustomerCart.reloadShopTable();
+				FrmMainCustomer.frmMainCustomerCart.reloadCartTable(shop);
 				
 				FrmCartFinal dlg=new FrmCartFinal();
 				this.setVisible(false);

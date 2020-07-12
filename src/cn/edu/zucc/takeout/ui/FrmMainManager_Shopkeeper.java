@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
+import cn.edu.zucc.takeout.control.ShopkeeperManager;
 import cn.edu.zucc.takeout.model.BeanCoupon;
 import cn.edu.zucc.takeout.model.BeanDiscount;
 import cn.edu.zucc.takeout.model.BeanPreferential;
@@ -200,6 +201,18 @@ public class FrmMainManager_Shopkeeper extends JFrame implements ActionListener{
 			}else {
 				curShop=allShop.get(i);
 				shop=curShop;
+				try {
+					new ShopkeeperManager().perconsume(shop);
+				} catch (BaseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					new ShopkeeperManager().shopstar(shop);
+				} catch (BaseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			FrmProductAdd dlg=new FrmProductAdd(this,"添加商品",true);
 			dlg.setVisible(true);

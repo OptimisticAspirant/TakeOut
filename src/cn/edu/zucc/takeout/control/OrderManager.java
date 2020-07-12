@@ -369,16 +369,12 @@ public class OrderManager implements IOrderManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="update productorder set orderstate=? where order_id=?";
+			String sql="update productorder set orderstate=? where order_id=? and orderstate=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setString(1, "“—ÀÕ¥Ô");
 			pst.setInt(2, order.getOrder_id());
+			pst.setString(3, "≈‰ÀÕ÷–");
 			pst.execute();
-//			sql="delete from productorder where order_id=?";
-//			pst=conn.prepareStatement(sql);
-//			pst.setInt(1, order.getOrder_id());
-//			pst.execute();
-//			pst.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

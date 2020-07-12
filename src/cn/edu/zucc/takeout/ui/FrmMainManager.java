@@ -36,7 +36,7 @@ public class FrmMainManager extends JFrame implements ActionListener {
 	public FrmMainManager(){
 		
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
-		this.setTitle("外卖助手");
+		this.setTitle("外卖助手-管理员");
     
 	    this.btnregister.addActionListener(this);
 	    this.btnmodifyPwd.addActionListener(this);

@@ -12,4 +12,8 @@ public interface IShopkeeperManager {
 	public void deleteshop(BeanShopkeeper shop) throws BaseException;
 	
 	public List<BeanShopkeeper> loadAll() throws BaseException;
+
+	public void perconsume(BeanShopkeeper shop) throws BaseException;
+
+	public void shopstar(BeanShopkeeper shop) throws BaseException;
 }

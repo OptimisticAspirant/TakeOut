@@ -26,8 +26,6 @@ public class FrmShopkeeperAdd extends JDialog implements ActionListener{
 	private Button btnCancel = new Button("取消");
 	private JLabel labelName = new JLabel("商家姓名：");
 	private JTextField edtName = new JTextField(20);
-	private JLabel labeltotalsale = new JLabel("商品销量：");
-	private JTextField edttotalsale = new JTextField(20);
 	
 	public FrmShopkeeperAdd(JFrame f, String s, boolean b) {
 		super(f, s, b);
@@ -37,10 +35,8 @@ public class FrmShopkeeperAdd extends JDialog implements ActionListener{
 		this.getContentPane().add(toolBar, BorderLayout.SOUTH);
 		workPane.add(labelName);
 		workPane.add(edtName);
-		workPane.add(labeltotalsale);
-		workPane.add(edttotalsale);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
-		this.setSize(320, 140);
+		this.setSize(320, 120);
 		
 		double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double height = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -59,9 +55,8 @@ public class FrmShopkeeperAdd extends JDialog implements ActionListener{
 		}
 		else if(e.getSource()==this.btnOk){
 			String shopname=this.edtName.getText();
-			int totalsale=Integer.parseInt(this.edttotalsale.getText());
 			try {
-				TakeOutUtil.shopkeeperManager.addshop(shopname,totalsale);
+				TakeOutUtil.shopkeeperManager.addshop(shopname,0);
 				this.setVisible(false);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);

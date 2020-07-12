@@ -52,7 +52,7 @@ public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
 	
 	public static BeanShopkeeper cartshop=null;
 	
-	private void reloadShopTable(){
+	public void reloadShopTable(){
 		try {
 			allShop=TakeOutUtil.shopkeeperManager.loadAll();
 		} catch (BaseException e) {
@@ -69,7 +69,7 @@ public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
 		this.dataTableShop.repaint();
 	}
 	
-	private void reloadCartTable(BeanShopkeeper shop){
+	public void reloadCartTable(BeanShopkeeper shop){
 		allCarts=FrmMainCustomer.cartList;
 		tblCartData =  new Object[allCarts.size()][6];
 		for(int i=0;i<allCarts.size();i++){
@@ -85,7 +85,7 @@ public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
 		this.dataTableCart.repaint();
 	}
 	
-	private void reloadCartOnlyTable(){
+	public void reloadCartOnlyTable(){
 		allCarts=FrmMainCustomer.cartList;
 		tblCartData =  new Object[allCarts.size()][6];
 		for(int i=0;i<allCarts.size();i++){

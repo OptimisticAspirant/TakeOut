@@ -133,4 +133,69 @@ public class ShopkeeperManager implements IShopkeeperManager{
 		}
 		return result;
 	}
+	
+	@Override
+	public void perconsume(BeanShopkeeper shop) throws BaseException{
+		Connection conn=null;
+		float money=0;
+        try {
+            conn=DBUtil.getConnection();
+            String sql="select avg(finalprice) from productorder where shop_id=?";
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql); 
+            pst.setInt(1,shop.getShop_id());
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+            	money=rs.getFloat(1);
+            }
+			pst.close();
+			sql="update shopkeeper set per_consume=? where shop_id=?";
+            pst=conn.prepareStatement(sql); 
+            pst.setFloat(1,money);
+            pst.setInt(2,shop.getShop_id());
+            pst.executeUpdate();
+			pst.close();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(conn!=null) {
+                try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+            }
+        }
+	}
+	@Override
+	public void shopstar(BeanShopkeeper shop) throws BaseException{
+		Connection conn=null;
+		float shopstar=0;
+        try {
+            conn=DBUtil.getConnection();
+            String sql="select avg(star) from productevaluate where shop_id=?";
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql); 
+            pst.setInt(1,shop.getShop_id());
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()) {
+            	shopstar=rs.getFloat(1);
+            }
+			pst.close();
+			sql="update shopkeeper set shop_star=? where shop_id=?";
+            pst=conn.prepareStatement(sql); 
+            pst.setFloat(1,shopstar);
+            pst.setInt(2,shop.getShop_id());
+            pst.executeUpdate();
+			pst.close();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(conn!=null) {
+                try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+            }
+        }
+	}
 }

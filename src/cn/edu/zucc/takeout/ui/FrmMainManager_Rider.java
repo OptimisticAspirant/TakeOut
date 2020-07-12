@@ -35,6 +35,7 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
     private JButton btnridermodify=new JButton("编辑骑手");
     private JButton btnriderdelete=new JButton("删除骑手");
     private JButton btnorder=new JButton("分配订单");
+    private JButton btnsum=new JButton("查看总单数和总收入");
     
 	private Object tblRiderTitle[]=BeanRider.tableTitles;
 	private Object tblRiderData[][];
@@ -115,6 +116,7 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 	    this.btnriderdelete.addActionListener(this);
 	    this.btnridermodify.addActionListener(this);
 	    this.btnorder.addActionListener(this);
+	    this.btnsum.addActionListener(this);
     	
 	    toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
@@ -122,6 +124,7 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 	    toolBar.add(btnridermodify);
 	    toolBar.add(btnriderdelete);
 	    toolBar.add(btnorder);
+	    toolBar.add(btnsum);
 	    this.setJMenuBar(menubar);
 	    
 	    this.getContentPane().add(new JScrollPane(this.dataTableRider), BorderLayout.WEST);
@@ -199,6 +202,17 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 			FrmRiderTakeOrder dlg=new FrmRiderTakeOrder();
 			dlg.setVisible(true);
 			this.reloadRiderTable();
+		}else if(e.getSource()==this.btnsum){
+			int i=FrmMainManager_Rider.this.dataTableRider.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择骑手", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curRider=allRider.get(i);
+				rider=curRider;
+			}
+			FrmRiderSum dlg=new FrmRiderSum();
+			dlg.setVisible(true);
 		}
 	}
 

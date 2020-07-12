@@ -78,6 +78,8 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	public static BeanShopkeeper shop=null;
 	public static BeanProduct product=null;
 	
+	public static FrmMainCustomer_Cart frmMainCustomerCart=null;
+	
 	public static List<BeanProduct> cartList=new ArrayList<BeanProduct>();
 	
 	private void reloadShopTable(){
@@ -114,7 +116,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 		this.dataTableCate.repaint();
 	}
 	
-	private void reloadProTable(){
+	public void reloadProTable(){
 		try {
 			allProduct=TakeOutUtil.productManager.loadShopProducts(curShop);
 		} catch (BaseException e) {
@@ -154,7 +156,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	public FrmMainCustomer() {
 
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
-		this.setTitle("外卖助手");
+		this.setTitle("外卖助手-用户");
     
 	    this.btnselfinfo.addActionListener(this);
 	    this.btnaddress.addActionListener(this);
@@ -241,6 +243,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 			dlg.setVisible(true);
 		}else if(e.getSource()==this.btncart){
 			FrmMainCustomer_Cart dlg=new FrmMainCustomer_Cart();
+			frmMainCustomerCart=dlg;
 			dlg.setVisible(true);
 		}else if(e.getSource()==this.btnmodifyPwd){
 			FrmCustomerModifyPwd dlg=new FrmCustomerModifyPwd(this,"密码修改",true);

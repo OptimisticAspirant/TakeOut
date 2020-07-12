@@ -53,9 +53,10 @@ public class AddressManager implements IAddressManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select * from productorder where add_id=?";
+			String sql="select * from productorder where add_id=? and orderstate=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setInt(1, address.getAdd_id());
+			pst.setString(2, "配送中");
 			pst.execute();
 			ResultSet rs=pst.getResultSet();
 			if(rs.next()) throw new BusinessException("该地址还有配送中的订单，不能删除!");
