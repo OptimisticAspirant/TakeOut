@@ -173,12 +173,12 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
+				
+				FrmStart.dlgLogin.frmMainCustomer.reloadShopTable();
 
 				FrmCartFinal dlg=new FrmCartFinal();
 				this.setVisible(false);
 				dlg.setVisible(true);
-				
-				FrmMainCustomer.frmMainCustomerCart.reloadShopTable();
 				
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
