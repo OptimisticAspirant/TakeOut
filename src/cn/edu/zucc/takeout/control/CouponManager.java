@@ -47,7 +47,7 @@ public class CouponManager implements ICouponManager{
             pst.setInt(3, count);
             pst.setDate(4, starttime);
             pst.setDate(5, endtime);
-            pst.execute();
+            pst.executeUpdate();
 			pst.close();
         }catch(SQLException e) {
             e.printStackTrace();
@@ -228,6 +228,46 @@ public class CouponManager implements ICouponManager{
 	}
 	
 	@Override
+	public List<BeanCouponhold> loadCouponhold(BeanCustomer customer,BeanShopkeeper shop) throws BaseException{
+		List<BeanCouponhold> result=new ArrayList<BeanCouponhold>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select coup_id,shop_id,hold_mount,subtract,hold_deadline from couponhold where cust_id=? and shop_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1,customer.getCust_id());
+			pst.setInt(2,shop.getShop_id());
+			pst.execute();
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				if(rs.getInt(3)>0) {
+					BeanCouponhold p=new BeanCouponhold();
+					p.setCoup_id(rs.getInt(1));
+					p.setShop_id(rs.getInt(2));
+					p.setHold_mount(rs.getInt(3));
+					p.setSubtract(rs.getFloat(4));
+					p.setHold_deadline(rs.getDate(5));
+					result.add(p);
+				}
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	@Override
 	public List<BeanCouponhold> loadCouponhold(BeanCustomer customer) throws BaseException{
 		List<BeanCouponhold> result=new ArrayList<BeanCouponhold>();
 		Connection conn=null;
@@ -308,11 +348,11 @@ public class CouponManager implements ICouponManager{
 		Date deadline=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select collect_count,collect_require from couponhold where cust_id=? and coup_id=?";
+			String sql="select collect_count,collect_require from discount where cust_id=? and coup_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setInt(1,collect.getCust_id());
+			pst.setInt(1,BeanCustomer.currentLoginUser.getCust_id());
 			pst.setInt(2,collect.getCoup_id());
-			pst.executeUpdate();
+			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				count=rs.getInt(1);
@@ -323,16 +363,17 @@ public class CouponManager implements ICouponManager{
 			}
 			rs.close();
 			pst.close();
-			sql="update couponhold set collect_count=collect_count-? where cust_id=?";
+			sql="update discount set collect_count=collect_count-? where cust_id=? and shop_id=?";
 			pst=conn.prepareStatement(sql);
 			pst.setInt(1,require);
-			pst.setInt(2,collect.getCust_id());
+			pst.setInt(2,BeanCustomer.currentLoginUser.getCust_id());
+			pst.setInt(3,collect.getShop_id());
 			pst.executeUpdate();
 			pst.close();
 			sql="select coup_count,enddate from coupon where coup_id=?";
 			pst=conn.prepareStatement(sql);
 			pst.setInt(1,collect.getCoup_id());
-			pst.executeUpdate();
+			pst.execute();
 			rs=pst.executeQuery();
 			while(rs.next()) {
 				subtract=rs.getFloat(1);
@@ -340,14 +381,54 @@ public class CouponManager implements ICouponManager{
 			}
 			rs.close();
 			pst.close();
-			sql="insert into couponhold(coup_id,cust_id,shop_id,hold_mount,subtract,hold_deadline) values(?,?,?,?,?,?)";
+			
+			sql="select hold_mount from couponhold where coup_id=?";
 			pst=conn.prepareStatement(sql);
 			pst.setInt(1,collect.getCoup_id());
-			pst.setInt(2,collect.getCust_id());
-			pst.setInt(3, collect.getShop_id());
-			pst.setInt(4, 1);
-			pst.setFloat(5, subtract);
-			pst.setDate(6, deadline);
+			pst.execute();
+			rs=pst.executeQuery();
+			if(rs.next()) {
+				sql="update couponhold set hold_mount=hold_mount+1 where coup_id=?";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1,collect.getCoup_id());
+				pst.execute();
+				pst.close();
+			}else {
+				sql="insert into couponhold(coup_id,cust_id,shop_id,hold_mount,subtract,hold_deadline) values(?,?,?,?,?,?)";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1,collect.getCoup_id());
+				pst.setInt(2,BeanCustomer.currentLoginUser.getCust_id());
+				pst.setInt(3, collect.getShop_id());
+				pst.setInt(4, 1);
+				pst.setFloat(5, subtract);
+				pst.setDate(6, deadline);
+				pst.executeUpdate();
+				pst.close();
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	@Override
+	public void deletecoupon(BeanCouponhold coupon) throws BaseException{
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="delete from couponhold where coup_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, coupon.getCoup_id());
 			pst.executeUpdate();
 			pst.close();
 		} catch (SQLException e) {

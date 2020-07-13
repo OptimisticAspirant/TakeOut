@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.edu.zucc.takeout.model.BeanCustomer;
+import cn.edu.zucc.takeout.model.BeanPreferential;
 import cn.edu.zucc.takeout.model.BeanProduct;
 import cn.edu.zucc.takeout.model.BeanShopkeeper;
 import cn.edu.zucc.takeout.util.BaseException;
@@ -20,5 +21,7 @@ public interface ICartManager {
 	public float searchfinal(int orderid) throws BaseException;
 
 	public void addToOrderdetails(List<BeanProduct> cartList, int key) throws BaseException;
+
+	public BeanPreferential manSet(float finalprice) throws BaseException;
 
 }

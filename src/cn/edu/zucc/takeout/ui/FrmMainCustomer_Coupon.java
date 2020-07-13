@@ -32,8 +32,7 @@ public class FrmMainCustomer_Coupon extends JFrame implements ActionListener{
 	
 	private JPanel toolBar=new JPanel();
 
-    private JButton btncoupview=new JButton("查看优惠券");
-    private JButton btncollectview=new JButton("查看集单数");
+	private JButton btndelete=new JButton("删除优惠券");
     private JButton btncoupget=new JButton("兑换优惠券");
     
 	private Object tblCoupTitle[]=BeanCouponhold.tableTitles;
@@ -90,14 +89,12 @@ public class FrmMainCustomer_Coupon extends JFrame implements ActionListener{
     	this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setTitle("优惠券管理");
     	
-    	this.btncollectview.addActionListener(this);
+    	this.btndelete.addActionListener(this);
 	    this.btncoupget.addActionListener(this);
-	    this.btncoupview.addActionListener(this);
     	
 	    toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 	    menubar.add(toolBar);
-	    toolBar.add(btncoupview);
-	    toolBar.add(btncollectview);
+	    toolBar.add(btndelete);
 	    toolBar.add(btncoupget);
 	    this.setJMenuBar(menubar);
 	    
@@ -145,6 +142,22 @@ public class FrmMainCustomer_Coupon extends JFrame implements ActionListener{
 			try {
 				TakeOutUtil.couponManager.changecoupon(curCollect);
 				this.reloadCollectTable();
+				this.reloadCoupTable();
+			} catch (BaseException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}else if(e.getSource()==this.btndelete){
+			int i=FrmMainCustomer_Coupon.this.dataTableCoup.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择优惠券", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curCoupon=allCoupons.get(i);
+			}
+			try {
+				TakeOutUtil.couponManager.deletecoupon(curCoupon);
+				this.reloadCoupTable();
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;

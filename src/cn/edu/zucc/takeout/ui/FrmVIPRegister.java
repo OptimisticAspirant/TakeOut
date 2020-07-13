@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
+import cn.edu.zucc.takeout.control.CustomerManager;
 import cn.edu.zucc.takeout.model.BeanCustomer;
 import cn.edu.zucc.takeout.util.BaseException;
 
@@ -56,7 +57,8 @@ public class FrmVIPRegister extends JDialog implements ActionListener{
 		else if(e.getSource()==this.btnOk){
 			int month=Integer.parseInt(this.edtMonth.getText());
 			try {
-				TakeOutUtil.VIPManager.VIPRegister(BeanCustomer.currentLoginUser, month);;
+				TakeOutUtil.VIPManager.VIPRegister(BeanCustomer.currentLoginUser, month);
+				FrmStart.dlgLogin.frmMainCustomer.label.setText("ÄúºÃ!  "+BeanCustomer.currentLoginUser.getCust_name()+"!  "+new CustomerManager().VipInfomation(BeanCustomer.currentLoginUser));
 				this.setVisible(false);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);

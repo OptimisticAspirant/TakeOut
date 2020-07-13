@@ -65,6 +65,21 @@ public class CustomerManager implements ICustomerManager{
 			result.setCust_city(city);
 			result.setRig_time(createDate);
 			result.setIfVIP("否");
+            sql="select coup_id,shop_id,coup_count from coupon";
+			pst=conn.prepareStatement(sql);
+			pst.execute();
+			rs=pst.getResultSet();
+			while(rs.next()) {
+				sql="insert into discount(cust_id,coup_id,shop_id,collect_count,collect_require) values(?,?,?,?,?)";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1, userid);
+				pst.setInt(2, rs.getInt(1));
+				pst.setInt(3, rs.getInt(2));
+				pst.setInt(4, 0);
+				pst.setInt(5, rs.getInt(3));
+				pst.executeUpdate();
+			}
+			pst.close();
         }catch(SQLException e) {
             e.printStackTrace();
         }finally {
@@ -206,11 +221,33 @@ public class CustomerManager implements ICustomerManager{
 			pst.execute();
 			java.sql.ResultSet rs=pst.getResultSet();
 			String state=null;
-			if(rs.next()) {
+			while(rs.next()) {
 				state=rs.getString(1);
-				throw new BusinessException("该用户存在配送中的订单，不能删除");
+				if(state.equals("配送中")) {
+					throw new BusinessException("该用户存在配送中的订单，不能删除");
+				}
 			}
 			sql="delete from customer where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+			pst.executeUpdate();
+			pst.close();
+			sql="delete from address where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+			pst.executeUpdate();
+			pst.close();
+			sql="delete from couponhold where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+			pst.executeUpdate();
+			pst.close();
+			sql="delete from discount where cust_id=?";
+			pst=conn.prepareStatement(sql);
+            pst.setInt(1,customer.getCust_id());
+			pst.executeUpdate();
+			pst.close();
+			sql="delete from discount where cust_id=?";
 			pst=conn.prepareStatement(sql);
             pst.setInt(1,customer.getCust_id());
 			pst.executeUpdate();

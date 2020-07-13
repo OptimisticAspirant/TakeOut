@@ -21,7 +21,7 @@ public interface ICouponManager {
 	
 	public List<BeanPreferential> loadShopMan(BeanShopkeeper shop) throws BaseException;
 
-	public List<BeanCouponhold> loadCouponhold(BeanCustomer customer) throws BaseException;
+	public List<BeanCouponhold> loadCouponhold(BeanCustomer customer, BeanShopkeeper shop) throws BaseException;
 
 	public List<BeanDiscount> loadCollect(BeanCustomer customer) throws BaseException;
 
@@ -30,5 +30,9 @@ public interface ICouponManager {
 	public void addpreferential(BeanShopkeeper shop, Float require, Float cut, String ifcoupon) throws BaseException;
 
 	public void deletepreferential(BeanPreferential preferential) throws BaseException;
+
+	public void deletecoupon(BeanCouponhold coupon) throws BaseException;
+
+	public List<BeanCouponhold> loadCouponhold(BeanCustomer customer) throws BaseException;
 
 }

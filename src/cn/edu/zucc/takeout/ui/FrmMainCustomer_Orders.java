@@ -33,6 +33,7 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
     private JButton btnEvaluateProduct=new JButton("评价商品");
     private JButton btnEvaluateRider=new JButton("评价骑手");
     private JButton btndelete=new JButton("删除订单");
+    private JButton btncancel=new JButton("取消订单");
     private JButton btnreceive=new JButton("确认送达");
     
 	private Object tblOrdTitle[]=BeanProductorder.tableTitles;
@@ -117,6 +118,7 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 	    this.btnEvaluateRider.addActionListener(this);
 	    this.btnEvaluateProduct.addActionListener(this);
 	    this.btnreceive.addActionListener(this);
+	    this.btncancel.addActionListener(this);
 	    this.btndelete.addActionListener(this);
 	    
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -124,6 +126,7 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 	    toolBar.add(btnreceive);
 	    toolBar.add(btnEvaluateRider);
 	    toolBar.add(btnEvaluateProduct);
+	    toolBar.add(btncancel);
 	    toolBar.add(btndelete);
 	    this.setJMenuBar(menubar);
 	    
@@ -212,7 +215,21 @@ public class FrmMainCustomer_Orders extends JFrame implements ActionListener{
 			} catch (BaseException e1) {
 				e1.printStackTrace();
 			}
+		}else if(e.getSource()==this.btncancel){
+			int i=FrmMainCustomer_Orders.this.dataTableOrd.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择订单", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curOrder=allOrder.get(i);
+			}
+			try {
+				TakeOutUtil.orderManager.cancelorders(curOrder);
+				reloadOrdTable();
+				reloadDetialTable();
+			} catch (BaseException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
-	
 }

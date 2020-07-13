@@ -38,7 +38,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 	private JLabel labelPwd = new JLabel("√‹¬Î£∫");
 	private JTextField edtUserId = new JTextField(20);
 	private JPasswordField edtPwd = new JPasswordField(20);
-
+	public FrmMainCustomer frmMainCustomer= null;
 	public FrmLogin(Frame f, String s, boolean b) {
 		super(f, s, b);
 		toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -94,6 +94,7 @@ public class FrmLogin extends JDialog implements ActionListener{
 			try {
 				BeanCustomer.currentLoginUser= TakeOutUtil.customerManager.login(userid, pwd);
 				FrmMainCustomer dlg=new FrmMainCustomer();
+				frmMainCustomer=dlg;
 				dlg.setVisible(true);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "¥ÌŒÛ",JOptionPane.ERROR_MESSAGE);

@@ -26,4 +26,6 @@ public interface IOrderManager {
 
 	public void receiveorders(BeanProductorder order) throws BaseException;
 
+	public void cancelorders(BeanProductorder order) throws BaseException;
+
 }

@@ -59,7 +59,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 		edtSelectCoupon.addItem("----请选择可用优惠券----");
 		List<BeanCouponhold> coupList=null;
 		try {
-			coupList = new CouponManager().loadCouponhold(BeanCustomer.currentLoginUser);
+			coupList = new CouponManager().loadCouponhold(BeanCustomer.currentLoginUser,FrmMainCustomer_Cart.cartshop);
 		} catch (BaseException e) {
 			e.printStackTrace();
 		}
@@ -144,10 +144,12 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 				finalprice=finalprice+FrmMainCustomer.cartList.get(i).getPro_discount()*FrmMainCustomer.cartList.get(i).getCount();
 			}
 			try {
+				finalprice=finalprice-(new CartManager().manSet(finalprice).getPre_cut());
 				finalprice=finalprice-(new CartManager().settle(coupid));
 			} catch (BaseException e2) {
 				e2.printStackTrace();
 			}
+			
 			
 			try {
 				key=TakeOutUtil.CartManager.settle(shop, BeanCustomer.currentLoginUser, coupid, addressid, originprice, finalprice, requiretime);
@@ -158,6 +160,20 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 				FrmMainCustomer.frmMainCustomerCart.reloadShopTable();
 				FrmMainCustomer.frmMainCustomerCart.reloadCartTable(shop);
 				
+				try {
+					TakeOutUtil.shopkeeperManager.perconsume(shop);
+				} catch (BaseException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				}
+
+				try {
+					TakeOutUtil.shopkeeperManager.shopstar(shop);
+				} catch (BaseException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+
 				FrmCartFinal dlg=new FrmCartFinal();
 				this.setVisible(false);
 				dlg.setVisible(true);

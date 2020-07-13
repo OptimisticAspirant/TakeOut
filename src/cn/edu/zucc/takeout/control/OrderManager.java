@@ -1,6 +1,7 @@
 package cn.edu.zucc.takeout.control;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -119,6 +120,7 @@ public class OrderManager implements IOrderManager {
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanOrderdetail p=new BeanOrderdetail();
+				p.setOrder_id(productorder.getOrder_id());
 				p.setPro_id(rs.getInt(1));
 				p.setMount(rs.getInt(2));
 				p.setPrice(rs.getFloat(3));
@@ -147,11 +149,22 @@ public class OrderManager implements IOrderManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select evaluate from riderbill where order_id=?";
+			String sql="select orderstate from productorder where order_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setInt(1, order.getOrder_id());
 			pst.execute();
-			java.sql.ResultSet rs=pst.executeQuery();
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				if(!rs.getString(1).equals("已送达")) {
+					JOptionPane.showMessageDialog(null, "订单暂未送达，无法对骑手进行评价！", "错误",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			sql="select evaluate from riderbill where order_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			rs=pst.executeQuery();
 			while(rs.next()) {
 				if(!rs.getString(1).equals("未评价")) {
 					throw new BusinessException("您已评价过该骑手，评价为"+rs.getString(1)+"!");
@@ -263,8 +276,70 @@ public class OrderManager implements IOrderManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="delete from orderdetail where order_id=?";
+			String sql="select orderstate from productorder where order_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				if(rs.getString(1).equals("等待骑手接单")) {
+					JOptionPane.showMessageDialog(null, "订单还未配送，不可删除订单！你可以选择取消订单", "错误",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			sql="delete from orderdetail where order_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			sql="delete from productorder where order_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	@Override
+	public void cancelorders(BeanProductorder order) throws BaseException{
+		Connection conn=null;
+		int shopid=0;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select orderstate,shop_id from productorder where order_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				if(!rs.getString(1).equals("等待骑手接单")) {
+					JOptionPane.showMessageDialog(null, "只能取消骑手暂未配送的订单", "错误",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				shopid=rs.getInt(2);
+			}
+			sql="select pro_id,mount from orderdetail where order_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			rs=pst.executeQuery();
+			while(rs.next()) {
+				sql="update shopkeeper set total_sale=total_sale-? where shop_id=?";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1, rs.getInt(2));
+				pst.setInt(2, shopid);
+				pst.execute();
+			}
+			sql="delete from orderdetail where order_id=?";
+			pst=conn.prepareStatement(sql);
 			pst.setInt(1, order.getOrder_id());
 			pst.execute();
 			sql="delete from productorder where order_id=?";
@@ -369,8 +444,19 @@ public class OrderManager implements IOrderManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="update productorder set orderstate=? where order_id=? and orderstate=?";
+			String sql="select orderstate from productorder where order_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, order.getOrder_id());
+			pst.execute();
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				if(rs.getString(1).equals("等待骑手接单")) {
+					JOptionPane.showMessageDialog(null, "骑手暂未接单，无法确认收货", "错误",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			sql="update productorder set orderstate=? where order_id=? and orderstate=?";
+			pst=conn.prepareStatement(sql);
 			pst.setString(1, "已送达");
 			pst.setInt(2, order.getOrder_id());
 			pst.setString(3, "配送中");

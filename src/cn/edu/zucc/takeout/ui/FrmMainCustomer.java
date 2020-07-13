@@ -49,7 +49,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
     private JButton btnshopdiscount=new JButton("查看商家优惠信息");
     private JButton btnrecommend=new JButton("查看推荐菜单");
 	private JButton btnaddcart=new JButton("加入购物车");
-
+	public JLabel label=null;
 	private JPanel statusBar = new JPanel();
 	
 	private Object tblShopTitle[]=BeanShopkeeper.tableTitles;
@@ -154,7 +154,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	}
 	
 	public FrmMainCustomer() {
-
+		
 		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setTitle("外卖助手-用户");
     
@@ -184,7 +184,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	    this.setJMenuBar(menubar);
 	    
 	    statusBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-	    JLabel label=null;
+	    
 		try {
 			label = new JLabel("您好!  "+BeanCustomer.currentLoginUser.getCust_name()+"!  "+new CustomerManager().VipInfomation(BeanCustomer.currentLoginUser));
 		} catch (BaseException e1) {
