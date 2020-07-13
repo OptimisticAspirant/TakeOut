@@ -145,8 +145,9 @@ public class RiderManager implements IRiderManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select count(*) from riderbill group by rider_id";
+			String sql="select count(*) from riderbill where rider_id=? group by rider_id";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, rider.getRider_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
@@ -174,12 +175,13 @@ public class RiderManager implements IRiderManager{
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select sum(income) from riderbill group by rider_id";
+			String sql="select sum(income) from riderbill where rider_id=? group by rider_id";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, rider.getRider_id());
 			pst.execute();
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
-				money=rs.getInt(1);
+				money=rs.getFloat(1);
 			}
 			rs.close();
 			pst.close();

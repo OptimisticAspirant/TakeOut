@@ -174,6 +174,7 @@ public class FrmMainManager_Rider extends JFrame implements ActionListener{
 			try {
 				TakeOutUtil.riderManager.deleterider(this.curRider);
 				this.reloadRiderTable();
+				this.reloadBillTable();
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;

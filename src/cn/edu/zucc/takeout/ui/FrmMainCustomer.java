@@ -289,9 +289,9 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 			}else {
 				curShop=allShop.get(i);
 				shop=curShop;
+				FrmMainCustomer_ShopDiscount dlg=new FrmMainCustomer_ShopDiscount();
+				dlg.setVisible(true);
 			}
-			FrmMainCustomer_ShopDiscount dlg=new FrmMainCustomer_ShopDiscount();
-			dlg.setVisible(true);
 		}else if(e.getSource()==this.btnorders){
 			FrmMainCustomer_Orders dlg=new FrmMainCustomer_Orders();
 			dlg.setVisible(true);

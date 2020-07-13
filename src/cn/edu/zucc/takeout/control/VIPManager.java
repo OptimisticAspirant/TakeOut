@@ -59,10 +59,11 @@ public class VIPManager implements IVIPManager{
 				}
 				rs.close();
 				pst.close();
-				sql="update customer set VIPdeadline=date_add(ddddd, interval ? month) where cust_id=?";
+				sql="update customer set VIPdeadline=date_add(?, interval ? month) where cust_id=?";
 	            pst=conn.prepareStatement(sql);
-	            pst.setInt(1,length);
-	            pst.setInt(2,customer.getCust_id());
+	            pst.setDate(1,new java.sql.Date(ddddd.getTime()));
+	            pst.setInt(2,length);
+	            pst.setInt(3,customer.getCust_id());
 	            pst.execute();
 				pst.close();
 			}

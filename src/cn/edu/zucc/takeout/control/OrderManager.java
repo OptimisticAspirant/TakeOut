@@ -282,19 +282,20 @@ public class OrderManager implements IOrderManager {
 			pst.execute();
 			ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
-				if(rs.getString(1).equals("等待骑手接单")) {
-					JOptionPane.showMessageDialog(null, "订单还未配送，不可删除订单！你可以选择取消订单", "错误",JOptionPane.ERROR_MESSAGE);
+				if(rs.getString(1).equals("等待骑手接单")||rs.getString(1).equals("配送中")) {
+					JOptionPane.showMessageDialog(null, "订单还未送达，不可删除订单！你可以选择取消订单", "错误",JOptionPane.ERROR_MESSAGE);
+				}else {
+					sql="delete from orderdetail where order_id=?";
+					pst=conn.prepareStatement(sql);
+					pst.setInt(1, order.getOrder_id());
+					pst.execute();
+					sql="delete from productorder where order_id=?";
+					pst=conn.prepareStatement(sql);
+					pst.setInt(1, order.getOrder_id());
+					pst.execute();
+					pst.close();
 				}
 			}
-			sql="delete from orderdetail where order_id=?";
-			pst=conn.prepareStatement(sql);
-			pst.setInt(1, order.getOrder_id());
-			pst.execute();
-			sql="delete from productorder where order_id=?";
-			pst=conn.prepareStatement(sql);
-			pst.setInt(1, order.getOrder_id());
-			pst.execute();
-			pst.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
