@@ -177,6 +177,9 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 				FrmCartFinal dlg=new FrmCartFinal();
 				this.setVisible(false);
 				dlg.setVisible(true);
+				
+				FrmMainCustomer.frmMainCustomerCart.reloadShopTable();
+				
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;

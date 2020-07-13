@@ -82,7 +82,7 @@ public class FrmMainCustomer extends JFrame implements ActionListener{
 	
 	public static List<BeanProduct> cartList=new ArrayList<BeanProduct>();
 	
-	private void reloadShopTable(){
+	public void reloadShopTable(){
 		try {
 			allShop=TakeOutUtil.shopkeeperManager.loadAll();
 		} catch (BaseException e) {
