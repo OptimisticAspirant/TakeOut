@@ -31,6 +31,7 @@ public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
 	
 	private JPanel toolBar=new JPanel();
 
+    private JButton btnmodify=new JButton("修改数量");
     private JButton btnsettlement=new JButton("结算");
     private JButton btndelete=new JButton("删除");
     
@@ -110,9 +111,11 @@ public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
     	
     	this.btndelete.addActionListener(this);
 	    this.btnsettlement.addActionListener(this);
+	    this.btnmodify.addActionListener(this);
     	
 	    toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
 	    menubar.add(toolBar);
+	    toolBar.add(btnmodify);
 	    toolBar.add(btnsettlement);
 	    toolBar.add(btndelete);
 	    this.setJMenuBar(menubar);
@@ -175,6 +178,20 @@ public class FrmMainCustomer_Cart extends JFrame implements ActionListener{
 			}
 			FrmCartSettle dlg=new FrmCartSettle(this, "结算", true);
 			dlg.setVisible(true);
+		}else if(e.getSource()==this.btnmodify){
+			int i=FrmMainCustomer_Cart.this.dataTableCart.getSelectedRow();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择商品", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}else {
+				curCart=allCarts.get(i);
+				String title = JOptionPane.showInputDialog(null, "请输入想要修改的商品数量：\n", "数量修改", JOptionPane.PLAIN_MESSAGE);
+		        int productcount=Integer.parseInt(title);
+		        FrmMainCustomer.cartList.remove(curCart);
+		        curCart.setCount(productcount);
+		        FrmMainCustomer.cartList.add(curCart);
+				reloadCartOnlyTable();
+			}
 		}
 	}
 	

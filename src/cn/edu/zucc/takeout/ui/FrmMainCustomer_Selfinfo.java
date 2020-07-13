@@ -20,6 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import cn.edu.zucc.takeout.TakeOutUtil;
+import cn.edu.zucc.takeout.control.CustomerManager;
 import cn.edu.zucc.takeout.model.BeanCustomer;
 import cn.edu.zucc.takeout.util.BaseException;
 
@@ -78,6 +79,12 @@ public class FrmMainCustomer_Selfinfo extends JDialog implements ActionListener{
 			String city=this.edtUserCity.getText();
 			try {
 				TakeOutUtil.customerManager.modify(BeanCustomer.currentLoginUser,username,gender,phonenumber,mail,city);
+				BeanCustomer.currentLoginUser.setCust_city(city);
+				BeanCustomer.currentLoginUser.setCust_gender(gender);
+				BeanCustomer.currentLoginUser.setCust_mail(mail);
+				BeanCustomer.currentLoginUser.setCust_name(username);
+				BeanCustomer.currentLoginUser.setCust_phone(phonenumber);
+				FrmStart.dlgLogin.frmMainCustomer.label.setText("ÄúºÃ!  "+BeanCustomer.currentLoginUser.getCust_name()+"!  "+new CustomerManager().VipInfomation(BeanCustomer.currentLoginUser));
 				this.setVisible(false);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(),"´íÎó",JOptionPane.ERROR_MESSAGE);
