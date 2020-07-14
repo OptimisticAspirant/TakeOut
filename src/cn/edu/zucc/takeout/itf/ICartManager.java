@@ -22,6 +22,6 @@ public interface ICartManager {
 
 	public void addToOrderdetails(List<BeanProduct> cartList, int key) throws BaseException;
 
-	public BeanPreferential manSet(float finalprice) throws BaseException;
+	public BeanPreferential manSet(float finalprice, BeanShopkeeper shop) throws BaseException;
 
 }

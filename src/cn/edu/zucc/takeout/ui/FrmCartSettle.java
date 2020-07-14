@@ -144,7 +144,7 @@ public class FrmCartSettle extends JDialog implements ActionListener{
 				finalprice=finalprice+FrmMainCustomer.cartList.get(i).getPro_discount()*FrmMainCustomer.cartList.get(i).getCount();
 			}
 			try {
-				finalprice=finalprice-(new CartManager().manSet(finalprice).getPre_cut());
+				finalprice=finalprice-(new CartManager().manSet(finalprice,shop).getPre_cut());
 				finalprice=finalprice-(new CartManager().settle(coupid));
 			} catch (BaseException e2) {
 				e2.printStackTrace();

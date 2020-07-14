@@ -200,17 +200,18 @@ public class CartManager implements ICartManager{
 	}
 
 	@Override
-	public BeanPreferential manSet(float finalprice) throws BaseException{
+	public BeanPreferential manSet(float finalprice,BeanShopkeeper shop) throws BaseException{
 		Connection conn=null;
         BeanPreferential result = new BeanPreferential();
         int count=0;
         try {
             conn=DBUtil.getConnection();
-            String sql="select pre_id,pre_require,ifcoupon,pre_cut,shop_id from preferential order by pre_require";
+            String sql="select pre_id,pre_require,ifcoupon,pre_cut,shop_id from preferential where shop_id=? order by pre_require";
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            pst.setInt(1, shop.getShop_id());
             ResultSet rs=pst.executeQuery();
             while(rs.next()&&count==0) {
-            	if(rs.getFloat(2)>finalprice&&rs.getString(3).equals("ÊÇ")) {
+            	if(rs.getFloat(2)<finalprice&&rs.getString(3).equals("ÊÇ")) {
             		sql="update productorder set pre_id=? where order_id=?";
                     pst=conn.prepareStatement(sql);
                     pst.setInt(1,rs.getInt(1));
